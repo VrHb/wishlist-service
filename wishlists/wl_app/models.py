@@ -7,7 +7,7 @@ User = get_user_model()
 
 class Wish(models.Model):
     '''Желание пользователя'''
-    user = models.ForeignKey(User, on_delete=CASCADE)
+    user = models.ForeignKey(User, related_name='wishes', on_delete=CASCADE)
     title = models.CharField('Название желания', max_length=250)
     text = models.TextField('Описание желания', blank=True, null=True)
     link = models.CharField('Ссылка', max_length=300, blank=True, null=True)
