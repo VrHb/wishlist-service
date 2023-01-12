@@ -6,23 +6,18 @@ from django.http import JsonResponse
 
 logger = logging.getLogger(__name__)
 
-wishes = []
 
 def show_main(request):
     if request.method == 'POST':
-        wishes.append(request.POST['wish'])
-        request.session['wishes'] = wishes
+        if 'wishes' not in request.session:
+            request.session['wishes'] = {}
+        request.session['wishes'][f"{request.POST['wish']}"] = "wishes_params"
         request.session.save()
-        return redirect('/')
+        return redirect('main')
     logger.info(logger.info(request.session.items()))
     return render(request, template_name="index.html", context={"wishes": request.session.get('wishes')})
 
 
-def show_user_wishes(request):
-    user = request.user
-    wishes = [wish.title for wish in user.wishes.all()]
-    return JsonResponse({'wishes': wishes})
-
-
-
+def get_wish(request, wish):
+    return JsonResponse({'wishes': request.session.get('wishes').get(wish)})
 

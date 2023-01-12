@@ -6,7 +6,7 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.show_main),
-    path('wishes', views.show_user_wishes),
+    path('', views.show_main, name='main'),
+    path('wishes/<wish>', views.get_wish, name='get_wish'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
