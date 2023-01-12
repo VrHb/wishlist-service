@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="list-group">
+  {% for wish in wishes %}
+    <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+      {{ wish }}
+    </a> 
+  {%  endfor %}
+</div>
+
+
+<form class="row g-3" method="POST">
+  {% csrf_token %}
+  <div class="col-auto">
+    <label for="inputPassword2" class="visually-hidden">Password</label>
+    <input type="Желание" class="form-control" name="wish" placeholder="wish">
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3">Добавить желание</button>
+  </div>
+</form>
+{% endblock %}
