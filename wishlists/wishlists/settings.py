@@ -9,8 +9,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = env.str('DJANGO_SECRET_KEY')
 
-DEBUG = True
-
 DEBUG = env.bool('DEBUG', False)
 
 ALLOWED_HOSTS = env.list('HOSTS', ['127.0.0.1', '0.0.0.0'])
