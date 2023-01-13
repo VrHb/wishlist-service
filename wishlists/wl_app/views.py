@@ -22,8 +22,26 @@ def show_main(request):
     return render(request, template_name="index.html", context={"wishlists": request.session.get('wishlists')})
 
 
-def get_wishlist(request, wishlist):
-    return JsonResponse({'wish_params': request.session.get('wishlists').get(wishlist)})
+def show_wishlist(request, wishlist):
+    if request.method == 'POST':
+        wishlists = request.session.get('wishlists')
+        if 'wishes' not in wishlists.get(wishlist):
+            wishlists.get(wishlist)['wishes'] = {}
+
+        # need generate wish id for wish key
+        wish_title = request.POST['wish']
+        if wish_title:
+            wishlists.get(wishlist)['wishes'][f"{wish_title}"] = {}
+            request.session.save()
+            return redirect(f'/{wishlist}')
+    logger.info(request.session.items())
+    if request.GET.get('delete'):
+        wishes = request.session.get('wishlists').get(wishlist).get('wishes')
+        wishes.pop(request.GET['delete'])
+        request.session.save()
+        return redirect(f'/{wishlist}')
+    logger.info(request.GET)
+    return render(request, template_name="wishlist.html", context={'wishlist': wishlist, 'wishes': request.session.get('wishlists').get(wishlist).get('wishes')})
 
 
 def delete_wishlist(request, wishlist):
@@ -31,3 +49,4 @@ def delete_wishlist(request, wishlist):
     wishes.pop(wishlist)
     request.session.save()
     return redirect('main')
+
