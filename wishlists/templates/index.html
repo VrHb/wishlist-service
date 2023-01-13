@@ -4,14 +4,14 @@
 
 {% block content %}
 <div class="list-group list-group-flush shadow p-3 mb-5 bg-body-tertiary rounded">
-  {% for wish in wishes %}
+  {% for wishlist in wishlists %}
    <li class="list-group-item d-flex justify-content-between align-items-start">
     <div class="ms-2 me-auto">
-      <div class="fw-bold">{{ wish }}</div>
-      {% if wish %}
-        <a href="{% url 'get_wish' wish %}" class="link-secondary">Описание</a>
+      <div class="fw-bold">{{ wishlist }}</div>
+      {% if wishlist %}
+        <a href="{% url 'get_wishlist' wishlist %}" class="link-secondary">Перейти к списку</a>
       </div>
-        <a href="{% url 'del_wish' wish %}" class="link-danger">Убрать</a>
+        <a href="{% url 'del_wishlist' wishlist %}" class="link-danger">Удалить</a>
       {% endif %}
   </li>
   {%  endfor %}
@@ -21,10 +21,10 @@
 <form class="row" method="POST">
   {% csrf_token %}
   <div class="col">
-    <input type="Желание" class="form-control" name="wish" placeholder="Название желания">
+    <input type="Желание" class="form-control" name="wishlist" placeholder="Название списка желаний">
   </div>
   <div class="col">
-    <button type="submit" class="btn btn-primary mb-3">Добавить желание</button>
+    <button type="submit" class="btn btn-primary mb-3">Добавить список</button>
   </div>
 </form>
 </div>
