@@ -8,9 +8,11 @@
    <li class="list-group-item d-flex justify-content-between align-items-start">
     <div class="ms-2 me-auto">
       <div class="fw-bold">{{ wish }}</div>
-      Ссылка на желание 
-    </div>
-    <button type="button" class="btn btn-outline-danger btn-sm">Убрать</button>
+      {% if wish %}
+        <a href="{% url 'get_wish' wish %}" class="link-secondary">Описание</a>
+      </div>
+        <a href="{% url 'del_wish' wish %}" class="link-danger">Убрать</a>
+      {% endif %}
   </li>
   {%  endfor %}
 </div>

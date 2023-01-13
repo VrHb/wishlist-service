@@ -11,13 +11,23 @@ def show_main(request):
     if request.method == 'POST':
         if 'wishes' not in request.session:
             request.session['wishes'] = {}
-        request.session['wishes'][f"{request.POST['wish']}"] = "wishes_params"
-        request.session.save()
-        return redirect('main')
+        
+        # need generate wish id for wish key
+        wish_title = request.POST['wish']
+        if wish_title:
+            request.session['wishes'][f"{wish_title}"] = {"link": "", "Image": ""}
+            request.session.save()
+            return redirect('main')
     logger.info(logger.info(request.session.items()))
     return render(request, template_name="index.html", context={"wishes": request.session.get('wishes')})
 
 
 def get_wish(request, wish):
-    return JsonResponse({'wishes': request.session.get('wishes').get(wish)})
+    return JsonResponse({'wish_params': request.session.get('wishes').get(wish)})
 
+
+def delete_wish(request, wish):
+    wishes = request.session.get('wishes')
+    wishes.pop(wish)
+    request.session.save()
+    return redirect('main')
