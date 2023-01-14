@@ -27,8 +27,6 @@ def show_wishlist(request, wishlist):
         wishlists = request.session.get('wishlists')
         if 'wishes' not in wishlists.get(wishlist):
             wishlists.get(wishlist)['wishes'] = []
-
-        # need generate wish id for wish key
         wish_title = request.POST['wish']
         wish_link = request.POST['link']
         wish_price = request.POST['price']
