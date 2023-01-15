@@ -24,7 +24,10 @@
             <a href="{{ wish.link }}" class="link-secondary">Где купить</a>
           {% endif %}
           {% if wish.price %}
-            <span class="badge bg-secondary">{{wish.price }} руб.</span>
+            <span class="badge bg-secondary">{{ wish.price }} руб.</span>
+          {% endif %}
+          {% if wish.will_give %}
+            <span class="badge bg-secondary">Подарок выбрали</span>
           {% endif %}
         </div>
         <form method="GET">

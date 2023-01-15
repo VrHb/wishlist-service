@@ -35,7 +35,10 @@ def show_wishlist(request, wishlist):
                 'title': wish_title,
                 'link': wish_link,
                 'price': wish_price,
-                'id': len(wishlists.get(wishlist)['wishes'])
+                'id': len(wishlists.get(wishlist)['wishes']),
+
+                # need give status from share list
+                'will_give': False, 
             }]
             request.session.save()
             return redirect(f'/{wishlist}')
