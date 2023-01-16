@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-<title>Список Желаний - {{ wishlist }}</title>
+<title>Список Желаний - {{ wishlist.title }}</title>
 {% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@
   </div>
 
   <div class="list-group list-group-flush shadow p-3 mb-4 bg-body-tertiary rounded">
-    <h3>{{ wishlist }}</h3>
+    <h3>{{ wishlist.title }}</h3>
     {% for wish in wishes %}
       <li class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
