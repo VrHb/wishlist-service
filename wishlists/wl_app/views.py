@@ -1,63 +1,71 @@
 import logging
 
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.sessions.models import Session
+
+from .models import Wishlist
+
 
 
 logger = logging.getLogger(__name__)
 
 
 def show_main(request):
+    session_id = request.session.session_key  # check expire session for lost db data
     if request.method == 'POST':
-        if 'wishlists' not in request.session:
-            request.session['wishlists'] = []
-        wishlist_title = request.POST['wishlist']
+        wishlist_title = request.POST.get('wishlist', False)
         if wishlist_title:
-            wishlist_id = len(request.session['wishlists'])
-            wishlist_params = {
-                'id': wishlist_id,
-                'title': wishlist_title,
-                'wishes': []
-                }
-            request.session['wishlists'].append(wishlist_params)
-            request.session.save()
+            Wishlist.objects.create(
+                session_id=session_id,
+                title=wishlist_title
+            )
             return redirect('main')
-    logger.info(logger.info(request.session.items()))
-    wishlists_params = {"wishlists": request.session.get('wishlists')}
+    wishlists_params = {"wishlists": Wishlist.objects.filter(session_id=session_id)}
     return render(request, template_name="index.html", context=wishlists_params)
 
 
 def show_wishlist(request, wishlist_id):
-    wishlist = request.session.get('wishlists')[wishlist_id]
+    wishlist = get_object_or_404(Wishlist, pk=wishlist_id) 
     if request.method == 'POST':
-        wish_title = request.POST['wish']
-        wish_link = request.POST['link']
-        wish_price = request.POST['price']
+        wish_title = request.POST.get('wish', None)
+        wish_link = request.POST.get('link', None)
+        wish_price = request.POST.get('price', 0.0)
+        logger.info(request.POST)
         if wish_title:
-            wishlist.get('wishes').append({
-                'title': wish_title,
-                'link': wish_link,
-                'price': wish_price,
-                'id': len(wishlist.get('wishes')),
-
-                # need give status from share list
-                'will_give': False, 
-            })
-            request.session.save()
+            wishlist.wishes.create(
+                title=wish_title,
+                link=wish_link,
+                price=wish_price
+            )
             return redirect(f'/{wishlist_id}')
-    logger.info(request.session.items())
-    wishes = wishlist.get('wishes')
     if request.GET.get('delete'):
-        wishes.pop(int(request.GET['delete']))
-        request.session.save()
+        delete_wish_id = int(request.GET.get('delete'))
+        wishlist.wishes.filter(id=delete_wish_id).delete() 
         return redirect(f'/{wishlist_id}')
     logger.info(request.GET)
-    wishlist_params = {'wishlist': wishlist, 'wishes': wishes}
+    wishlist_params = {'wishlist': wishlist, 'wishes': wishlist.wishes.all()}
     return render(request, template_name="wishlist.html", context=wishlist_params)
 
 
+def show_shared_wishlist(request, session_key, wishlist_id):
+    wishlist = Wishlist.objects.filter(session_id=session_key).get(id=wishlist_id)
+    wishes = wishlist.wishes.all()
+    logger.info(wishes)
+    if request.GET.get('will_give'):
+        wish_id = int(request.GET.get('will_give'))
+        selected_wish = wishes.get(id=wish_id)
+        selected_wish.is_given = True
+        selected_wish.save()
+        return redirect(f'/{session_key}/{wishlist_id}')
+    wishlist_params = {'wishlist': wishlist, 'wishes': wishes}
+    return render(request, template_name="share.html", context=wishlist_params)
+
+
 def delete_wishlist(request, wishlist_id):
-    wishlists = request.session.get('wishlists')
-    wishlists.pop(wishlist_id)
-    request.session.save()
+    Wishlist.objects.filter(id=wishlist_id).delete()
     return redirect('main')
+
+
+def get_session_key(request):
+    session_key = request.session.session_key
+    return session_key

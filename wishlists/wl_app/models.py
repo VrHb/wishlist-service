@@ -3,13 +3,15 @@ from django.contrib.auth import get_user_model
 from django.db.models.deletion import CASCADE
 
 
-User = get_user_model()
+class Wishlist(models.Model):
+    '''Список желаний'''
+    session_id = models.CharField('Идентификатор сессии', max_length=250, blank=True, null=True)
+    title = models.CharField('Названий списка', max_length=100, blank=True, null=True)
 
 class Wish(models.Model):
     '''Желание пользователя'''
-    user = models.ForeignKey(User, related_name='wishes', on_delete=CASCADE)
+    wishlist = models.ForeignKey(Wishlist, related_name='wishes', on_delete=CASCADE, null=True)
     title = models.CharField('Название желания', max_length=250)
-    text = models.TextField('Описание желания', blank=True, null=True)
     link = models.CharField('Ссылка', max_length=300, blank=True, null=True)
     price = models.DecimalField(
         'Цена', 
@@ -18,6 +20,7 @@ class Wish(models.Model):
         blank=True,
         null=True
     )
+    is_given = models.BooleanField(null=True, blank=True, default=False)
 
     class Meta:
         verbose_name = 'Желание'

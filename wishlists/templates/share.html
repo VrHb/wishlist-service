@@ -7,12 +7,6 @@
 {% endblock %}
 
 {% block content %}
-  <div class="col justify-content-center d-flex">
-    <button type="button" class="btn btn-outline-success mb-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-      Добавить желание 
-    </button>
-  </div>
-
   <div class="list-group list-group-flush shadow p-3 mb-4 bg-body-tertiary rounded">
     <h3>{{ wishlist.title }}</h3>
     {% for wish in wishes %}
@@ -31,7 +25,9 @@
           {% endif %}
         </div>
         <form method="GET">
-          <button type="submit" class="btn btn-outline-danger" name="delete" value="{{ wish.id }}">Убрать</button>
+          {% if not wish.is_given %}
+            <button type="submit" class="btn btn-outline-danger" name="will_give" value="{{ wish.id }}">Подарить</button>
+          {% endif %}
         </form>
         {% endif %}
       </li>
