@@ -36,6 +36,20 @@
         {% endif %}
       </li>
     {% endfor %}
+    <div class="row-md-4 justify-content-center d-flex">
+      <h4 class="p-1">Поделиться:</h4>
+    </div>
+    <div class="row-md-4 justify-content-center list-unstyled d-flex">
+      <a class="p-2" href="http://vk.com/share.php?url={% url 'share_wishlist' request.session.session_key wishlist.id %}&title={{ wishlist.title }}&decription={{ wishlist.title }}&image={% static 'svg/brush.svg' %}">
+        Вконтакте
+      </a>
+      <a  class="p-2" href="https://t.me/share/url?url={%url 'share_wishlist' request.session.session_key wishlist.id %}&text=Список {{ wishlist.title }}">
+        Telegram
+      </a>
+      <a class="p-2" href="whatsapp://send?text={%url 'share_wishlist' request.session.session_key wishlist.id %}" data-action="share/whatapp/share">
+        WhatsApp
+      </a>
+    </div>
   </div>
 
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

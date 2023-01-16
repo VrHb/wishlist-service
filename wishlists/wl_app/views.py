@@ -56,7 +56,7 @@ def show_shared_wishlist(request, session_key, wishlist_id):
         selected_wish = wishes.get(id=wish_id)
         selected_wish.is_given = True
         selected_wish.save()
-        return redirect(f'/{session_key}/{wishlist_id}')
+        return redirect(f'/share/{session_key}/{wishlist_id}')
     wishlist_params = {'wishlist': wishlist, 'wishes': wishes}
     return render(request, template_name="share.html", context=wishlist_params)
 
