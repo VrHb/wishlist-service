@@ -15,6 +15,19 @@
 
   <div class="list-group list-group-flush shadow p-3 mb-4 bg-body-tertiary rounded">
     <h3>{{ wishlist.title }}</h3>
+    <div class="row-md-4 justify-content-right d-flex">
+      <div class="dropdown">
+        <a class="btn btn-outline-success dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+    Поделиться 
+        </a>
+
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li><a class="dropdown-item" href="http://vk.com/share.php?url={% url 'share_wishlist' request.session.session_key wishlist.id %}&title={{ wishlist.title }}&decription={{ wishlist.title }}&image={% static 'svg/brush.svg' %}">Вконтакте</a></li>
+          <li><a class="dropdown-item" href="https://t.me/share/url?url={%url 'share_wishlist' request.session.session_key wishlist.id %}&text=Список {{ wishlist.title }}">Telegram</a></li>
+          <li><a class="dropdown-item" href="whatsapp://send?text={%url 'share_wishlist' request.session.session_key wishlist.id %}" data-action="share/whatapp/share">WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
     {% for wish in wishes %}
       <li class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
@@ -36,20 +49,6 @@
         {% endif %}
       </li>
     {% endfor %}
-    <div class="row-md-4 justify-content-center d-flex">
-      <h4 class="p-1">Поделиться:</h4>
-    </div>
-    <div class="row-md-4 justify-content-center list-unstyled d-flex">
-      <a class="p-2" href="http://vk.com/share.php?url={% url 'share_wishlist' request.session.session_key wishlist.id %}&title={{ wishlist.title }}&decription={{ wishlist.title }}&image={% static 'svg/brush.svg' %}">
-        Вконтакте
-      </a>
-      <a  class="p-2" href="https://t.me/share/url?url={%url 'share_wishlist' request.session.session_key wishlist.id %}&text=Список {{ wishlist.title }}">
-        Telegram
-      </a>
-      <a class="p-2" href="whatsapp://send?text={%url 'share_wishlist' request.session.session_key wishlist.id %}" data-action="share/whatapp/share">
-        WhatsApp
-      </a>
-    </div>
   </div>
 
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
