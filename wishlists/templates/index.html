@@ -8,28 +8,27 @@
 
 {% block content %}
   <div class="col justify-content-center d-flex">
-<form class="row" method="POST">
-  {% csrf_token %}
-  <div class="col-auto mb-2">
-    <input type="wishlist-name" class="form-control" name="wishlist" placeholder="Название списка желаний">
-  </div>
-  <div class="col-auto">
-    <button type="submit" class="btn btn-primary">Добавить список</button>
-  </div>
-</form>
-  </div>
-<div class="list-group list-group-flush shadow p-3 mb-5 bg-body-tertiary rounded">
-  {% for wishlist in wishlists %}
-   <li class="list-group-item d-flex justify-content-between align-items-start">
-    <div class="ms-2 me-auto">
-      <div class="fw-bold">{{ wishlist.title }}</div>
-      {% if wishlist %}
-        <a href="{% url 'wishlist' wishlist.id %}" class="link-secondary">Перейти к списку</a>
+    <form class="row" method="POST">
+      {% csrf_token %}
+      <div class="col-auto mb-3">
+        <input type="wishlist-name" class="form-control" name="wishlist" placeholder="Название списка желаний">
       </div>
+      <div class="col-auto mb-3">
+        <button type="submit" class="btn btn-primary">Добавить список</button>
+      </div>
+    </form>
+  </div>
+  <div class="list-group list-group-flush shadow p-3 mb-5 bg-body-tertiary rounded">
+    {% for wishlist in wishlists %}
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">{{ wishlist.title }}</div>
+        {% if wishlist %}
+            <a href="{% url 'wishlist' wishlist.id %}" class="link-secondary">Перейти к списку</a>
+        </div>
         <a href="{% url 'del_wishlist' wishlist.id %}" class="link-danger">Удалить</a>
-      {% endif %}
-  </li>
-  {%  endfor %}
-</div>
-</br>
+        {% endif %}
+      </li>
+    {%  endfor %}
+  </div>
 {% endblock %}

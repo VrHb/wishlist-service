@@ -10,51 +10,51 @@
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'main' %}">Твои желания</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Статьи</a>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'main' %}">Авоська</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link" href="#">Блог</a>
+          <a class="nav-link" href="#">О сервисе</a>
+        </div>
       </div>
     </div>
+  </nav>
+  <div class="container-sm">
+    <figure class="text-center">
+      <blockquote class="blockquote">
+        <p>Хороший подарок - подарок желанный!</p>
+      </blockquote>
+      <figcaption class="blockquote-footer">
+        Вероника Маринина <cite title="Source Title">Дневники Вероники</cite>
+      </figcaption>
+    </figure>
+      {% block content %}
+      {% endblock %}
   </div>
-</nav>
-<div class="container-sm">
-  <figure class="text-center">
-    <blockquote class="blockquote">
-      <p>Хороший подарок - подарок желанный!</p>
-    </blockquote>
-    <figcaption class="blockquote-footer">
-      Вероника Маринина <cite title="Source Title">Дневники Вероники</cite>
-    </figcaption>
-  </figure>
-    {% block content %}
-    {% endblock %}
-</div>
 
-<div class="container-sm">
-  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-    <div class="col-md-4 d-flex align-items-center">
-      <a href="{% url 'main' %}" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-        <img src="{% static 'svg/brush.svg' %}" class="bi" width="30" height="24">
-      </a>
-      <span class="mb-3 mb-md-0 text-muted">© 2022 V&V, Inc</span>
-    </div>
-    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-      <li class="ms-3">
-        <a href="https://www.instagram.com/">
-          <img src="{% static 'svg/instagram.svg' %}" class="bi" width="30" height="24">
+  <div class="container-sm">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+      <div class="col-md-4 d-flex align-items-center">
+        <a href="{% url 'main' %}" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+          <img src="{% static 'svg/brush.svg' %}" class="bi" width="30" height="24">
         </a>
-      </li>
-    </ul>
-  </footer>
-</div>
+        <span class="mb-3 mb-md-0 text-muted">© 2023 V&V, Inc</span>
+      </div>
+      <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+        <li class="ms-3">
+          <a href="https://www.instagram.com/">
+            <img src="{% static 'svg/instagram.svg' %}" class="bi" width="30" height="24">
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </div>
+  <script src="{% static 'js/popper.min.js' %}"></script>
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
-  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'js/bootstrap.bundle.min.js.map' %}"></script>
 </body>
 </html>

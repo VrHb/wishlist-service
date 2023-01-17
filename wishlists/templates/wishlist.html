@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-<title>Список Желаний - {{ wishlist.title }}</title>
+<title>Авоська - {{ wishlist.title }}</title>
 {% endblock %}
 
 {% block content %}
@@ -22,6 +22,7 @@
         </a>
 
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li><a class="dropdown-item" href="{% url 'share_wishlist' request.session.session_key wishlist.id %}">Тест</a></li>
           <li><a class="dropdown-item" href="http://vk.com/share.php?url={% url 'share_wishlist' request.session.session_key wishlist.id %}&title={{ wishlist.title }}&decription={{ wishlist.title }}&image={% static 'svg/brush.svg' %}">Вконтакте</a></li>
           <li><a class="dropdown-item" href="https://t.me/share/url?url={%url 'share_wishlist' request.session.session_key wishlist.id %}&text=Список {{ wishlist.title }}">Telegram</a></li>
           <li><a class="dropdown-item" href="whatsapp://send?text={%url 'share_wishlist' request.session.session_key wishlist.id %}" data-action="share/whatapp/share">WhatsApp</a></li>
@@ -37,10 +38,10 @@
             <a href="{{ wish.link }}" class="link-secondary">Где купить</a>
           {% endif %}
           {% if wish.price %}
-            <span class="badge bg-secondary">{{ wish.price }} руб.</span>
+            <span class="badge bg-info">{{ wish.price }} руб.</span>
           {% endif %}
           {% if wish.is_given %}
-            <span class="badge bg-secondary">Подарок выбрали</span>
+            <span class="badge bg-success">Подарок выбрали</span>
           {% endif %}
         </div>
         <form method="GET">
@@ -49,6 +50,9 @@
         {% endif %}
       </li>
     {% endfor %}
+  </div>
+  <div class="col text-left">
+    <a href="{% url 'main' %}" class="link-success">К cпискам желаний</a>
   </div>
 
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

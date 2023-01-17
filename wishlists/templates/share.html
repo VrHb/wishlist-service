@@ -18,15 +18,15 @@
             <a href="{{ wish.link }}" class="link-secondary">Где купить</a>
           {% endif %}
           {% if wish.price %}
-            <span class="badge bg-secondary">{{ wish.price }} руб.</span>
+            <span class="badge bg-info">{{ wish.price }} руб.</span>
           {% endif %}
           {% if wish.is_given %}
-            <span class="badge bg-secondary">Подарок выбрали</span>
+            <span class="badge bg-success">Подарок выбрали</span>
           {% endif %}
         </div>
         <form method="GET">
           {% if not wish.is_given %}
-            <button type="submit" class="btn btn-outline-danger" name="will_give" value="{{ wish.id }}">Подарить</button>
+            <button type="submit" class="btn btn-outline-success" name="will_give" value="{{ wish.id }}">Подарить</button>
           {% endif %}
         </form>
         {% endif %}

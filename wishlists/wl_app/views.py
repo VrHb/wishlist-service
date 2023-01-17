@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 def show_main(request):
     session_id = request.session.session_key  # check expire session for lost db data
+    logger.info(request.session.session_key)
     if request.method == 'POST':
         wishlist_title = request.POST.get('wishlist', False)
         if wishlist_title:
@@ -25,6 +26,7 @@ def show_main(request):
 
 
 def show_wishlist(request, wishlist_id):
+    logger.info(request.session.session_key)
     wishlist = get_object_or_404(Wishlist, pk=wishlist_id) 
     if request.method == 'POST':
         wish_title = request.POST.get('wish', None)
@@ -42,7 +44,6 @@ def show_wishlist(request, wishlist_id):
         delete_wish_id = int(request.GET.get('delete'))
         wishlist.wishes.filter(id=delete_wish_id).delete() 
         return redirect(f'/{wishlist_id}')
-    logger.info(request.GET)
     wishlist_params = {'wishlist': wishlist, 'wishes': wishlist.wishes.all()}
     return render(request, template_name="wishlist.html", context=wishlist_params)
 
