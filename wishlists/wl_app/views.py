@@ -11,6 +11,8 @@ logger = logging.getLogger(__name__)
 
 
 def show_main(request):
+    if not request.session.exists(request.session.session_key):
+        request.session.create()
     session_id = request.session.session_key  # check expire session for lost db data
     logger.info(request.session.session_key)
     if request.method == 'POST':
