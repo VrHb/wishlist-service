@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+<title>Список Желаний - Выбранные подарки</title>
+{% endblock %}
+
+{% block content %}
+  <div class="list-group list-group-flush shadow p-3 mb-4 bg-body-tertiary rounded">
+    {% for gift in gifts %}
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          {% if gift %}
+            <div class="fw-bold">{{ gift.title }}</div>
+          {% if gift.link %}
+            <a href="{{ gift.link }}" class="link-secondary">Где купить</a>
+          {% endif %}
+          {% if gift.price %}
+            <span class="badge bg-info">{{ gift.price }} руб.</span>
+          {% endif %}
+          {% endif %}
+        </div>
+      </li>
+    {% endfor %}
+  </div>
+
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Добавить желание</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST">
+          {% csrf_token %}
+          <div class="modal-body">
+            <div class="container">
+                <div class="col">
+                  <input type="wish-title" class="form-control mb-2" name="wish" placeholder="Название желания">
+                  <input type="wish-link" class="form-control mb-2" name="link" placeholder="Ссылка">
+                  <input type="wish-price" class="form-control mb-2" name="price" placeholder="Цена">
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Отмена</button>
+            <button type="submit" class="btn btn-outline-success">Добавить</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

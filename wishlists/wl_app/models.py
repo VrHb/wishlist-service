@@ -29,5 +29,16 @@ class Wish(models.Model):
     def __str__(self):
         return self.title
 
-
+class Gift(models.Model):
+    '''Выбранные подарки'''
+    session_id = models.CharField('Идентификатор сессии', max_length=250, blank=True, null=True)
+    title = models.CharField('Название подарка', max_length=250)
+    link = models.CharField('Ссылка', max_length=300, blank=True, null=True)
+    price = models.DecimalField(
+        'Цена', 
+        max_digits=7, 
+        decimal_places=2,
+        blank=True,
+        null=True
+    )
 
