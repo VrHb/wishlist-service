@@ -82,6 +82,10 @@ def show_selected_gifts(request):
     return render(request, template_name='gifts.html', context=gifts_params)
 
 
+def show_about(request):
+    return render(request, template_name='about.html', context={})
+
+
 def get_session_key(request):
     session_key = request.session.session_key
     return session_key
