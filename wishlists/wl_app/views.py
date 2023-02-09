@@ -1,10 +1,9 @@
 import logging
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.sessions.models import Session
 
 from .models import Wishlist, Gift
-
+from .forms import WishForm
 
 
 logger = logging.getLogger(__name__)
@@ -31,22 +30,29 @@ def show_wishlist(request, wishlist_id):
     logger.info(request.session.session_key)
     wishlist = get_object_or_404(Wishlist, pk=wishlist_id) 
     if request.method == 'POST':
-        wish_title = request.POST.get('wish', None)
-        wish_link = request.POST.get('link', None)
-        wish_price = request.POST.get('price', 0.0)
-        logger.info(request.POST)
-        if wish_title:
+        form = WishForm(request.POST)
+        if form.is_valid():
+            wish_title = form.cleaned_data.get('wish')
+            wish_link = form.cleaned_data.get('link')
+            wish_price = form.cleaned_data.get('price')
             wishlist.wishes.create(
                 title=wish_title,
                 link=wish_link,
                 price=wish_price
             )
             return redirect(f'/{wishlist_id}')
+        else:
+            logger.info(form.errors.as_data())
+    else:
+        form = WishForm() 
     if request.GET.get('delete'):
         delete_wish_id = int(request.GET.get('delete'))
         wishlist.wishes.filter(id=delete_wish_id).delete() 
-        return redirect(f'/{wishlist_id}')
-    wishlist_params = {'wishlist': wishlist, 'wishes': wishlist.wishes.all()}
+    wishlist_params = {
+        'wishlist': wishlist,
+        'wishes': wishlist.wishes.all(),
+        'form': form
+    }
     return render(request, template_name="wishlist.html", context=wishlist_params)
 
 
@@ -84,9 +90,4 @@ def show_selected_gifts(request):
 
 def show_about(request):
     return render(request, template_name='about.html', context={})
-
-
-def get_session_key(request):
-    session_key = request.session.session_key
-    return session_key
 

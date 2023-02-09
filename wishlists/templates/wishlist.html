@@ -25,7 +25,7 @@
         {% url 'share_wishlist' request.session.session_key wishlist.id as shared_url %}
         <li><a class="dropdown-item" href="https://vk.com/share.php?url={{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ shared_url }}&title={{ wishlist.title }}&noparse=true">Вконтакте</a></li>
           <li><a class="dropdown-item" href="https://t.me/share/url?url={{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ shared_url }}&text=Список {{ wishlist.title }}">Telegram</a></li>
-          <li><a class="dropdown-item" href="whatsapp://send?text={{ wishlist.title}}%20{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ shared_url }}" data-action="share/whatapp/share">WhatsApp</a></li>
+          <li><a class="dropdown-item" href="https://api.whatsapp.com/send?text={{ wishlist.title }}%20{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ shared_url }}" data-action="share/whatapp/share">WhatsApp</a></li>
         </ul>
       </div>
     </div>
@@ -68,8 +68,11 @@
             <div class="container">
                 <div class="col">
                   <input type="wish-title" class="form-control mb-2" name="wish" placeholder="Название желания">
+                  <p>{{ form.errors.wish }}</p>
                   <input type="wish-link" class="form-control mb-2" name="link" placeholder="Ссылка">
+                  <p>{{ form.errors.link }}</p>
                   <input type="wish-price" class="form-control mb-2" name="price" placeholder="Цена">
+                  <p>{{ form.errors.price }}</p>
                 </div>
             </div>
           </div>

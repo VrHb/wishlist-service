@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models.deletion import CASCADE
 
+from .forms import WishForm
+
 
 class Wishlist(models.Model):
     '''Список желаний'''
