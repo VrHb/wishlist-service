@@ -12,6 +12,7 @@
       {% csrf_token %}
       <div class="col-auto mb-3">
         <input type="wishlist-name" class="form-control" name="wishlist" placeholder="Название списка желаний">
+        {{ form.errors.wishlist }}
       </div>
       <div class="col-auto mb-3">
         <button type="submit" class="btn btn-primary">Добавить список</button>

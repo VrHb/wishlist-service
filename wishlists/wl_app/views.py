@@ -3,7 +3,7 @@ import logging
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import Wishlist, Gift
-from .forms import WishForm
+from .forms import WishForm, WishlistForm
 
 
 logger = logging.getLogger(__name__)
@@ -15,14 +15,22 @@ def show_main(request):
     session_id = request.session.session_key  # check expire session for lost db data
     logger.info(request.session.session_key)
     if request.method == 'POST':
-        wishlist_title = request.POST.get('wishlist', False)
-        if wishlist_title:
+        form = WishlistForm(request.POST)
+        if form.is_valid():
+            wishlist_title = form.cleaned_data.get('wishlist', False)
             Wishlist.objects.create(
                 session_id=session_id,
                 title=wishlist_title
             )
             return redirect('main')
-    wishlists_params = {"wishlists": Wishlist.objects.filter(session_id=session_id)}
+        else:
+            logger.info(form.errors.as_data())
+    else:
+        form = WishForm() 
+    wishlists_params = {
+        "wishlists": Wishlist.objects.filter(session_id=session_id),
+        'form': form
+    }
     return render(request, template_name="index.html", context=wishlists_params)
 
 
