@@ -23,9 +23,9 @@
 
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
         {% url 'share_wishlist' request.session.session_key wishlist.id as shared_url %}
-        <li><a class="dropdown-item" href="http://vk.com/share.php?url={{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ shared_url }}&title={{ wishlist.title }}&decription={{ wishlist.title }}&image={% static 'svg/brush.svg' %}">Вконтакте</a></li>
+        <li><a class="dropdown-item" href="https://vk.com/share.php?url={{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ shared_url }}&title={{ wishlist.title }}&noparse=true">Вконтакте</a></li>
           <li><a class="dropdown-item" href="https://t.me/share/url?url={{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ shared_url }}&text=Список {{ wishlist.title }}">Telegram</a></li>
-          <li><a class="dropdown-item" href="whatsapp://send?text={{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ shared_url }}" data-action="share/whatapp/share">WhatsApp</a></li>
+          <li><a class="dropdown-item" href="whatsapp://send?text={{ wishlist.title}}%20{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ shared_url }}" data-action="share/whatapp/share">WhatsApp</a></li>
         </ul>
       </div>
     </div>
