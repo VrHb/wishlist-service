@@ -7,5 +7,5 @@ class WishlistForm(forms.Form):
 class WishForm(forms.Form):
     wish = forms.CharField(required=True, max_length=100)
     link = forms.URLField(required=False)
-    price = forms.FloatField(min_value=0, required=False)
+    price = forms.FloatField(min_value=0, max_value=99999, required=False)
 
