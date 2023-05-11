@@ -21,6 +21,12 @@
           <a class="nav-link" href="{% url 'gifts' %}">Выбранные подарки</a>
           <a class="nav-link" href="#">Блог</a>
           <a class="nav-link" href="{% url 'about' %}">О сервисе</a>
+          {% if user.is_authenticated %}
+            <p>Hello,{{ user }}</p>
+            <a href="{% url 'logout' %}">Выйти</a>
+          {% else %}
+            <a href="{% url 'login' %}">Войти</a>
+          {% endif %}
         </div>
       </div>
     </div>

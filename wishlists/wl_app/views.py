@@ -1,15 +1,52 @@
 import logging
 
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse
 
 from .models import Wishlist, Gift
-from .forms import WishForm, WishlistForm
+from .forms import WishForm, WishlistForm, LoginForm
 
 
 logger = logging.getLogger(__name__)
 
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            user = authenticate(
+                username=cleaned_data['username'],
+                password=cleaned_data['password']
+            )
+            if user is not None:
+                login(request, user)
+                return redirect('wishlists')
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form})
 
-def show_main(request):
+
+def registration_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            cleaned_data = form.cleaned_data
+            user = authenticate(
+                username=cleaned_data['username'],
+                password=cleaned_data['password1']
+            )
+            login(request, user)
+            return redirect('wishlists')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration.html', {'form': form})
+
+
+def main_view(request):
     if not request.session.exists(request.session.session_key):
         request.session.create()
     session_id = request.session.session_key  # check expire session for lost db data
@@ -32,6 +69,31 @@ def show_main(request):
         'form': form
     }
     return render(request, template_name="index.html", context=wishlists_params)
+
+
+def wishlists_view(request):
+    if not request.session.exists(request.session.session_key):
+        request.session.create()
+    session_id = request.session.session_key  # check expire session for lost db data
+    logger.info(request.session.session_key)
+    if request.method == 'POST':
+        form = WishlistForm(request.POST)
+        if form.is_valid():
+            wishlist_title = form.cleaned_data.get('wishlist', False)
+            Wishlist.objects.create(
+                session_id=session_id,
+                title=wishlist_title
+            )
+            return redirect('main')
+        else:
+            logger.info(form.errors.as_data())
+    else:
+        form = WishForm() 
+    wishlists_params = {
+        "wishlists": Wishlist.objects.filter(session_id=session_id),
+        'form': form
+    }
+    return render(request, template_name="wishlists.html", context=wishlists_params)
 
 
 def show_wishlist(request, wishlist_id):
@@ -98,4 +160,9 @@ def show_selected_gifts(request):
 
 def show_about(request):
     return render(request, template_name='about.html', context={})
+
+
+def show_logout(request):
+    logout(request)
+    return redirect('main')
 

@@ -22,6 +22,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'social_django',
+    
     'wl_app',
 ]
 
@@ -48,6 +51,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -67,6 +72,14 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.vk.VKOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.github.GithubOAuth2',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -99,6 +112,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
 
+SOCIAL_AUTH_DJANGO_POSTGRES_JSONFIELD = True
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = env('VK_OAUTH_SECRET_KEY')
+SOCIAL_AUTH_VK_OAUTH_SECRET = env('VK_OAUTH_SERVICE_KEY')
+
+SOCIAL_AUTH_GITHUB_KEY=env('GITHUB_CLIENT_ID')
+SOCIAL_AUTH_GITHUB_SECRET=env('GITHUB_CLIENT_SECRET')
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'wishlists'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -118,3 +141,4 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+

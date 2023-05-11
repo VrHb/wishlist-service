@@ -1,0 +1,21 @@
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+<title>Wishlist - Регистрация</title>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Зарегистрироваться</button>
+  </form>
+  <a href="{% url 'login' %}">Войти</a>
+  <br>
+  <p>Войти через соцсети</p>
+  <a href="{% url 'social:begin' 'vk-oauth2' %}"><img src="{% static 'svg/vk.svg' %}" class="avatar-3" data-toggle="tooltip" title="Войти через VK"></a>
+  <a href="{% url 'social:begin' 'github' %}">Github login</a>
+{% endblock %}
