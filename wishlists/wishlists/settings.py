@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 from environs import Env
+import dj_database_url
 
 env = Env()
 env.read_env()
@@ -67,11 +68,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, env.str('STATIC_DIR_NAME', 'staticfiles'))
 WSGI_APPLICATION = 'wishlists.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': 
+        dj_database_url.config(
+            default=env('PSQL_URL')
+        )
 }
+
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.vk.VKOAuth2',
