@@ -17,11 +17,19 @@
     <h5 class="card-title">Дарить желаемые подарки</h5>
     <p class="card-text">Дарите много подарков! Вообще дарите! Попробуйте дарить с нами!</p>
     <p class="card-text">Еще не подарил, дари давай!</p>
+    {% if user.is_authenticated %}
+      <a href="{% url 'wishlists' %}">
+        <button type="submit" class="btn btn-primary">
+        Мои списки желаний
+        </button>
+      </a>
+    {% else %}
       <a href="{% url 'login' %}">
         <button type="submit" class="btn btn-primary">
         Войти или зарегистрироваться
         </button>
       </a>
+    {% endif %}
   </div>
 </div>
 
