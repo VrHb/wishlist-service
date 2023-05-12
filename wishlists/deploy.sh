@@ -6,7 +6,7 @@ echo "Pulling changes from repository ..."
 git pull origin main
 
 echo "Activating virtual environment ..."
-source ./env/bin/activate
+source ../env/bin/activate
 
 echo "Installing python libs ..."
 pip install -r requirements.txt
