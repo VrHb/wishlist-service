@@ -9,7 +9,7 @@ echo "Activating virtual environment ..."
 source ../env/bin/activate
 
 echo "Installing python libs ..."
-pip install -r requirements.txt
+pip install -r ../requirements.txt
 
 echo "Making db operations ..."
 python manage.py makemigrations --dry-run --check
