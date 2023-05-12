@@ -12,20 +12,26 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'main' %}">Список желаний</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      {% if user.is_authenticated %}
+        <a class="navbar-brand" href="{% url 'wishlists' %}">Wishl - Списки желаний {{ user }}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      {% else %}
+        <a class="navbar-brand" href="{% url 'wishlists' %}">Wishl - Списки желаний</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      {% endif %}
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-link" href="{% url 'gifts' %}">Выбранные подарки</a>
           <a class="nav-link" href="#">Блог</a>
           <a class="nav-link" href="{% url 'about' %}">О сервисе</a>
           {% if user.is_authenticated %}
-            <p>Hello,{{ user }}</p>
-            <a href="{% url 'logout' %}">Выйти</a>
+            <a class="btn btn-outline-danger" href="{% url 'logout' %}">Выход</a>
           {% else %}
-            <a href="{% url 'login' %}">Войти</a>
+            <a class="btn btn-outline-primary" href="{% url 'login' %}">Войти</a>
           {% endif %}
         </div>
       </div>

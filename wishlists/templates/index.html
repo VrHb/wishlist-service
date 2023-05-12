@@ -7,26 +7,27 @@
 {% endblock %}
 
 {% block content %}
-  <div class="col justify-content-center d-flex">
-    <div class="col-auto mb-3">
+
+  <div class="list-group list-group-flush shadow p-3 mb-5 bg-body-tertiary rounded">
+    <div class="card">
+  <div class="card-header">
+    Что за сервис? 
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Дарить желаемые подарки</h5>
+    <p class="card-text">Дарите много подарков! Вообще дарите! Попробуйте дарить с нами!</p>
+    <p class="card-text">Еще не подарил, дари давай!</p>
       <a href="{% url 'login' %}">
         <button type="submit" class="btn btn-primary">
         Войти или зарегистрироваться
         </button>
       </a>
+  </div>
+</div>
+
+  <div class="col justify-content-center d-flex">
+    <div class="col-auto mb-3">
     </div>
   </div>
-  <div class="list-group list-group-flush shadow p-3 mb-5 bg-body-tertiary rounded">
-    {% for wishlist in wishlists %}
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">{{ wishlist.title }}</div>
-        {% if wishlist %}
-            <a href="{% url 'wishlist' wishlist.id %}" class="link-secondary">Перейти к списку</a>
-        </div>
-        <a href="{% url 'del_wishlist' wishlist.id %}" class="link-danger">Удалить</a>
-        {% endif %}
-      </li>
-    {%  endfor %}
   </div>
 {% endblock %}

@@ -47,56 +47,35 @@ def registration_view(request):
 
 
 def main_view(request):
-    if not request.session.exists(request.session.session_key):
-        request.session.create()
-    session_id = request.session.session_key  # check expire session for lost db data
-    logger.info(request.session.session_key)
-    if request.method == 'POST':
-        form = WishlistForm(request.POST)
-        if form.is_valid():
-            wishlist_title = form.cleaned_data.get('wishlist', False)
-            Wishlist.objects.create(
-                session_id=session_id,
-                title=wishlist_title
-            )
-            return redirect('main')
-        else:
-            logger.info(form.errors.as_data())
-    else:
-        form = WishForm() 
-    wishlists_params = {
-        "wishlists": Wishlist.objects.filter(session_id=session_id),
-        'form': form
-    }
-    return render(request, template_name="index.html", context=wishlists_params)
+    return render(request, template_name="index.html", context={})
 
 
+@login_required(login_url='login')
 def wishlists_view(request):
-    if not request.session.exists(request.session.session_key):
-        request.session.create()
-    session_id = request.session.session_key  # check expire session for lost db data
-    logger.info(request.session.session_key)
+    user = request.user
+    wishlists = Wishlist.objects.filter(user=user)
     if request.method == 'POST':
         form = WishlistForm(request.POST)
         if form.is_valid():
             wishlist_title = form.cleaned_data.get('wishlist', False)
             Wishlist.objects.create(
-                session_id=session_id,
+                user=user,
                 title=wishlist_title
             )
-            return redirect('main')
+            return redirect('wishlists')
         else:
             logger.info(form.errors.as_data())
     else:
         form = WishForm() 
     wishlists_params = {
-        "wishlists": Wishlist.objects.filter(session_id=session_id),
+        "wishlists": wishlists,
         'form': form
     }
     return render(request, template_name="wishlists.html", context=wishlists_params)
 
 
-def show_wishlist(request, wishlist_id):
+@login_required(login_url='login')
+def wishlist_view(request, wishlist_id):
     logger.info(request.session.session_key)
     wishlist = get_object_or_404(Wishlist, pk=wishlist_id) 
     if request.method == 'POST':
@@ -126,8 +105,10 @@ def show_wishlist(request, wishlist_id):
     return render(request, template_name="wishlist.html", context=wishlist_params)
 
 
-def show_shared_wishlist(request, session_key, wishlist_id):
-    wishlist = Wishlist.objects.filter(session_id=session_key).get(id=wishlist_id)
+@login_required(login_url='login')
+def shared_wishlist_view(request, user_id, wishlist_id):
+    user = request.user
+    wishlist = Wishlist.objects.filter(user=user_id).get(id=wishlist_id)
     wishes = wishlist.wishes.all()
     logger.info(wishes)
     if request.GET.get('will_give'):
@@ -136,33 +117,35 @@ def show_shared_wishlist(request, session_key, wishlist_id):
         selected_wish.is_given = True
         selected_wish.save()
         Gift.objects.create(
-            session_id=request.session.session_key,
+            user=user,
             title=selected_wish.title,
             price=selected_wish.price,
             link=selected_wish.link
         )
-        return redirect(f'/share/{session_key}/{wishlist_id}')
+        return redirect(f'/share/{user_id}/{wishlist_id}')
     wishlist_params = {'wishlist': wishlist, 'wishes': wishes}
     return render(request, template_name="share.html", context=wishlist_params)
 
 
+@login_required(login_url='login')
 def delete_wishlist(request, wishlist_id):
     Wishlist.objects.filter(id=wishlist_id).delete()
-    return redirect('main')
+    return redirect('wishlists')
 
 
-def show_selected_gifts(request):
-    session_id = request.session.session_key
-    gifts = Gift.objects.filter(session_id=session_id)
+@login_required(login_url='login')
+def selected_gifts_view(request):
+    user = request.user
+    gifts = Gift.objects.filter(user=user)
     gifts_params = {'gifts': gifts}
     return render(request, template_name='gifts.html', context=gifts_params)
 
 
-def show_about(request):
+def about_view(request):
     return render(request, template_name='about.html', context={})
 
 
-def show_logout(request):
+def logout_view(request):
     logout(request)
     return redirect('main')
 

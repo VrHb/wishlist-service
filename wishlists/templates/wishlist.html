@@ -22,7 +22,7 @@
         </a>
 
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        {% url 'share_wishlist' request.session.session_key wishlist.id as shared_url %}
+        {% url 'share_wishlist' request.user.id wishlist.id as shared_url %}
         <li><a class="dropdown-item" href="https://vk.com/share.php?url={{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ shared_url }}&title={{ wishlist.title }}&noparse=true">Вконтакте</a></li>
           <li><a class="dropdown-item" href="https://t.me/share/url?url={{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ shared_url }}&text=Список {{ wishlist.title }}">Telegram</a></li>
           <li><a class="dropdown-item" href="https://api.whatsapp.com/send?text={{ wishlist.title }}%20{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ shared_url }}" data-action="share/whatapp/share">WhatsApp</a></li>
@@ -52,7 +52,7 @@
     {% endfor %}
   </div>
   <div class="col text-left">
-    <a href="{% url 'main' %}" class="link-success">К cпискам желаний</a>
+    <a href="{% url 'wishlists' %}" class="link-success">К cпискам желаний</a>
   </div>
 
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

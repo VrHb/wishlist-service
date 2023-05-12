@@ -5,16 +5,41 @@ from django.db.models.deletion import CASCADE
 from .forms import WishForm
 
 
+User = get_user_model()
+
+
 class Wishlist(models.Model):
     '''Список желаний'''
-    session_id = models.CharField('Идентификатор сессии', max_length=250, blank=True, null=True)
-    title = models.CharField('Названий списка', max_length=100, blank=True, null=True)
+    user = models.ForeignKey(
+        User,
+        related_name='wishlists',
+        on_delete=CASCADE
+    )
+    title = models.CharField(
+        'Названий списка',
+        max_length=100,
+        blank=True,
+        null=True
+    )
 
 class Wish(models.Model):
     '''Желание пользователя'''
-    wishlist = models.ForeignKey(Wishlist, related_name='wishes', on_delete=CASCADE, null=True)
-    title = models.CharField('Название желания', max_length=250)
-    link = models.CharField('Ссылка', max_length=300, blank=True, null=True)
+    wishlist = models.ForeignKey(
+        Wishlist,
+        related_name='wishes',
+        on_delete=CASCADE,
+        null=True
+    )
+    title = models.CharField(
+        'Название желания',
+        max_length=250
+    )
+    link = models.CharField(
+        'Ссылка',
+        max_length=300,
+        blank=True,
+        null=True
+    )
     price = models.DecimalField(
         'Цена', 
         max_digits=7, 
@@ -22,7 +47,11 @@ class Wish(models.Model):
         blank=True,
         null=True
     )
-    is_given = models.BooleanField(null=True, blank=True, default=False)
+    is_given = models.BooleanField(
+        null=True,
+        blank=True,
+        default=False
+    )
 
     class Meta:
         verbose_name = 'Желание'
@@ -33,14 +62,26 @@ class Wish(models.Model):
 
 class Gift(models.Model):
     '''Выбранные подарки'''
-    session_id = models.CharField('Идентификатор сессии', max_length=250, blank=True, null=True)
-    title = models.CharField('Название подарка', max_length=250)
-    link = models.CharField('Ссылка', max_length=300, blank=True, null=True)
+    title = models.CharField(
+        'Название подарка',
+        max_length=250
+    )
+    link = models.CharField(
+        'Ссылка',
+        max_length=300,
+        blank=True,
+        null=True
+    )
     price = models.DecimalField(
         'Цена', 
         max_digits=7, 
         decimal_places=2,
         blank=True,
         null=True
+    )
+    user = models.ForeignKey(
+        User,
+        related_name='gifts',
+        on_delete=CASCADE
     )
 

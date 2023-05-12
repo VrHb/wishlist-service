@@ -20,6 +20,7 @@
     </form>
   </div>
   <div class="list-group list-group-flush shadow p-3 mb-5 bg-body-tertiary rounded">
+    {% if wishlists %}
     {% for wishlist in wishlists %}
       <li class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
@@ -31,5 +32,6 @@
         {% endif %}
       </li>
     {%  endfor %}
+    {% endif %}
   </div>
 {% endblock %}
