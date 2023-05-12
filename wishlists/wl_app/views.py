@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
 
 from .models import Wishlist, Gift
-from .forms import WishForm, WishlistForm, LoginForm
+from .forms import WishForm, WishlistForm, LoginForm, RegisterUser
 
 
 logger = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ def login_view(request):
 
 def registration_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegisterUser(request.POST)
         if form.is_valid():
             form.save()
             cleaned_data = form.cleaned_data
@@ -42,7 +42,7 @@ def registration_view(request):
             login(request, user)
             return redirect('wishlists')
     else:
-        form = UserCreationForm()
+        form = RegisterUser()
     return render(request, 'registration.html', {'form': form})
 
 
