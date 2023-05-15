@@ -1,11 +1,11 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="ru">
+<html prefix="og: https://ogp.me/ns#" lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta prefix="og: http://ogp.me/ns#"> 
+  <meta property="og:image" content="{% static 'svg/brush.svg' %}" />
   <link rel="shortcut icon" type="image/png" href="{% static 'svg/brush.svg' %}"/>
   {% block title %}
   {% endblock %}
