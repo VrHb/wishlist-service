@@ -8,6 +8,10 @@
 
 {% block content %}
   <div class="list-group list-group-flush shadow p-3 mb-4 bg-body-tertiary rounded">
+    {% if not gifts %}
+    <p class="h4 text-center">У Вас еще нет выбранных подарков.</p> 
+    <p class="h4 text-center">Создайте себе <a href="{% url 'wishlists' %}">список</a>, поделитесь им, наверное Вам что-то подарят :)</p>
+    {% endif %}
     {% for gift in gifts %}
       <li class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
