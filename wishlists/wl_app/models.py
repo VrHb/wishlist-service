@@ -42,7 +42,7 @@ class Wish(models.Model):
     )
     price = models.DecimalField(
         'Цена', 
-        max_digits=7, 
+        max_digits=9, 
         decimal_places=2,
         blank=True,
         null=True
@@ -74,7 +74,7 @@ class Gift(models.Model):
     )
     price = models.DecimalField(
         'Цена', 
-        max_digits=7, 
+        max_digits=9, 
         decimal_places=2,
         blank=True,
         null=True
