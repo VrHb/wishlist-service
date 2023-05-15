@@ -3,12 +3,12 @@
 {% load static %}
 
 {% block title %}
-<title>Wishl - Списки Желаний</title>
+<title>Make a wish - Твои списки желаний</title>
 {% endblock %}
 
 {% block content %}
   <div class="col justify-content-center d-flex">
-    <form class="row" method="POST">
+    <form class="row justify-content-center" method="POST">
       {% csrf_token %}
       <div class="col-auto mb-3">
         <input type="wishlist-name" class="form-control" name="wishlist" placeholder="Название списка желаний">

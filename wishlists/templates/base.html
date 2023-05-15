@@ -5,48 +5,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/png" href="{% static 'svg/brush.svg' %}"/>
   {% block title %}
   {% endblock %}
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
+  <div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+      <a href="{% url 'main' %}" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+        <img class="bi me-ml-2" width="40" height="32" src="{% static 'svg/brush.svg'%}">
+        <span class="fs-4">Make a wish</span>
+      </a>
       {% if user.is_authenticated %}
-        <a class="navbar-brand" href="{% url 'wishlists' %}">Wishl - Списки желаний {{ user }}</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="{% url 'wishlists' %}" class="nav-link px-2 link-dark">Мои списки</a></li>
+          <li><a href="{% url 'gifts' %}" class="nav-link px-2 link-dark">Выбранные подарки</a></li>
+          <li><a href="#" class="nav-link px-2 link-secondary">Блог</a></li>
+          <li><a href="#" class="nav-link px-2 link-secondary">FAQ</a></li>
+          <li><a href="{% url 'about' %}" class="nav-link px-2 link-dark">О сервисе</a></li>
+          <li><a href="{% url 'logout' %}" class="nav-link px-2 link-blue">Выйти</a></li>
+        </ul>
       {% else %}
-        <a class="navbar-brand" href="{% url 'wishlists' %}">Wishl - Списки желаний</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      {% endif %}
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link" href="{% url 'wishlists' %}">Мои списки</a>
-          <a class="nav-link" href="{% url 'gifts' %}">Выбранные подарки</a>
-          <a class="nav-link" href="#">Блог</a>
-          <a class="nav-link" href="{% url 'about' %}">О сервисе</a>
-          {% if user.is_authenticated %}
-            <a class="btn btn-outline-danger" href="{% url 'logout' %}">Выход</a>
-          {% else %}
-            <a class="btn btn-outline-primary" href="{% url 'login' %}">Войти</a>
-          {% endif %}
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="#" class="nav-link px-2 link-secondary">Блог</a></li>
+          <li><a href="#" class="nav-link px-2 link-secondary">FAQ</a></li>
+          <li><a href="{% url 'about' %}" class="nav-link px-2 link-dark">О сервисе</a></li>
+        </ul>
+        <div class="col-md-3 text-end">
+          <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Войти
+          </a>
+          <a class="btn btn-primary" href="{% url 'registration' %}">Зарегистрироваться</a>
         </div>
-      </div>
-    </div>
-  </nav>
+      {% endif %}
+    </header>
+  </div>  
+
   <div class="container-sm">
-    <figure class="text-center">
-      <blockquote class="blockquote">
-        <p>Хороший подарок - подарок желанный!</p>
-      </blockquote>
-      <figcaption class="blockquote-footer">
-        Вероника Маринина <cite title="Source Title">Дневники Вероники</cite>
-      </figcaption>
-    </figure>
       {% block content %}
       {% endblock %}
   </div>
@@ -54,7 +49,7 @@
   <div class="container-sm">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
       <div class="col-md-4 d-flex align-items-center">
-        <a href="{% url 'wishlists' %}" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+        <a href="{% url 'main' %}" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
           <img src="{% static 'svg/brush.svg' %}" class="bi" width="30" height="24">
         </a>
         <span class="mb-3 mb-md-0 text-muted">© 2023 V&V, Inc</span>
