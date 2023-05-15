@@ -21,6 +21,14 @@
           {% endif %}
           {% endif %}
         </div>
+        {% if gift.wish_id %}
+          <form method="POST">
+            {% csrf_token %}
+            <input type=hidden name=wish_id value="{{ gift.wish_id }}">
+            <input type=hidden name=gift_id value="{{ gift.id }}">
+            <button type="submit" class="btn btn-outline-secondary">Не дарить</button>
+          </form>
+        {% endif %}
       </li>
     {% endfor %}
   </div>

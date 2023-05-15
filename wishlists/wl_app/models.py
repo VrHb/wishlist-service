@@ -79,6 +79,11 @@ class Gift(models.Model):
         blank=True,
         null=True
     )
+    wish_id = models.IntegerField(
+        'Идентификатор желания',
+        null=True,
+        blank=True
+    )
     user = models.ForeignKey(
         User,
         related_name='gifts',

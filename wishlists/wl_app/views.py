@@ -6,7 +6,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
 
-from .models import Wishlist, Gift
+from .models import Wishlist, Gift, Wish
 from .forms import WishForm, WishlistForm, LoginForm, RegisterUser
 
 
@@ -116,11 +116,13 @@ def shared_wishlist_view(request, user_id, wishlist_id):
         selected_wish = wishes.get(id=wish_id)
         selected_wish.is_given = True
         selected_wish.save()
+        logger.info(selected_wish.id)
         Gift.objects.create(
             user=user,
             title=selected_wish.title,
             price=selected_wish.price,
-            link=selected_wish.link
+            link=selected_wish.link,
+            wish_id=selected_wish.id
         )
         return redirect(f'/share/{user_id}/{wishlist_id}')
     wishlist_params = {'wishlist': wishlist, 'wishes': wishes}
@@ -137,6 +139,15 @@ def delete_wishlist(request, wishlist_id):
 def selected_gifts_view(request):
     user = request.user
     gifts = Gift.objects.filter(user=user)
+    wishes = Wish.objects.all()
+    if request.POST:
+        gift_id = int(request.POST.get('gift_id'))
+        gifts.get(id=gift_id).delete()
+        wish_id = int(request.POST.get('wish_id'))
+        selected_wish = wishes.get(id=wish_id)
+        selected_wish.is_given = False 
+        selected_wish.save()
+        return redirect('gifts')
     gifts_params = {'gifts': gifts}
     return render(request, template_name='gifts.html', context=gifts_params)
 
