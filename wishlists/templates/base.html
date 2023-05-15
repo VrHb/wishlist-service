@@ -22,18 +22,18 @@
       </a>
       {% if user.is_authenticated %}
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="{% url 'wishlists' %}" class="nav-link px-2 link-dark">Мои списки</a></li>
-          <li><a href="{% url 'gifts' %}" class="nav-link px-2 link-dark">Выбранные подарки</a></li>
+          <li><a {% if request.resolver_match.url_name == 'wishlists' %} class="nav-link active px-2" {% endif %} href="{% url 'wishlists' %}" class="nav-link px-2 link-dark">Мои списки</a></li>
+          <li><a {% if request.resolver_match.url_name == 'gifts' %} class="nav-link active px-2" {% endif %} href="{% url 'gifts' %}" class="nav-link nav-item px-2 link-dark">Выбранные подарки</a></li>
           <li><a href="#" class="nav-link px-2 link-secondary">Блог</a></li>
           <li><a href="#" class="nav-link px-2 link-secondary">FAQ</a></li>
-          <li><a href="{% url 'about' %}" class="nav-link px-2 link-dark">О сервисе</a></li>
-          <li><a href="{% url 'logout' %}" class="nav-link px-2 link-blue">Выйти</a></li>
+          <li><a {% if request.resolver_match.url_name == 'about' %} class="nav-link active px-2" {% endif %} href="{% url 'about' %}" class="nav-link px-2 link-dark">О сервисе</a></li>
+          <li><a href="{% url 'logout' %}" class="nav-link px-2 link-secondary">Выйти</a></li>
         </ul>
       {% else %}
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
           <li><a href="#" class="nav-link px-2 link-secondary">Блог</a></li>
           <li><a href="#" class="nav-link px-2 link-secondary">FAQ</a></li>
-          <li><a href="{% url 'about' %}" class="nav-link px-2 link-dark">О сервисе</a></li>
+          <li><a {% if request.resolver_match.url_name == 'about' %} class="nav-link active px-2" {% endif %} href="{% url 'about' %}" class="nav-link px-2 link-dark">О сервисе</a></li>
         </ul>
         <div class="col-md-3 text-end">
           <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Войти
