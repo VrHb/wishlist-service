@@ -8,6 +8,13 @@
 
 {% block content %}
   <div class="col justify-content-center d-flex">
+    {% if form.errors %}
+      <script type="text/javascript">
+        $(window).on('load', function() {
+            $('#staticBackdrop').modal('show');
+        });
+      </script>
+    {% endif %}
     <button type="button" class="btn btn-outline-success mb-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
       Добавить желание 
     </button>
@@ -84,4 +91,8 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
 {% endblock %}
