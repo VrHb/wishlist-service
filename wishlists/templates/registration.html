@@ -7,6 +7,10 @@
 <title>Make a wish - Регистрация</title>
 {% endblock %}
 
+{% block script %}
+  <script src="{% static 'js/scripts.js' %}"></script>
+{% endblock %}
+
 {% block content %}
   <div class="col justify-content-center d-flex">
     <form method="post">
@@ -15,8 +19,12 @@
         {{ field.errors }}
         {{ field }}
       {% endfor %}
+      <div class="col-auto mb-4 form-check">
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onclick ="reveal_reg()">
+        <label class="form-check-label" for="flexSwitchCheckDefault">Показать пароли</label>
+      </div>
       <div class="text-center col-auto mb-2">
-        <button class="btn btn-primary btn-lg" type="submit">Зарегистрироваться</button>
+        <button class="btn btn-primary btn" type="submit">Зарегистрироваться</button>
       </div>
       <div class="text-center col-auto mb-2">
         <a href="{% url 'login' %}">Войти</a>
