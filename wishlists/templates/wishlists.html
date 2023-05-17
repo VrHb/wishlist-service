@@ -21,7 +21,7 @@
     <form class="row justify-content-center" method="POST">
       {% csrf_token %}
       <div class="col-auto mb-3">
-        <input type="wishlist-name" class="form-control" name="wishlist" placeholder="Название списка желаний">
+        <input type="wishlist-name" class="form-control text-center" name="wishlist" placeholder="Название списка желаний">
         {{ form.errors.wishlist }}
       </div>
       <div class="col-auto mb-3">
@@ -45,7 +45,12 @@
       </li>
     {%  endfor %}
     {% else %}
-    <p class="h4 text-center">У Вас пока нет списков, создайте первый! :)</p>
+      <div class="p-5 mb-4 bg-light text-center rounded-3">
+        <div class="container-fluid py-5">
+          <h1 class="display-8 fw-bold">📝 создайте список</h1>
+          <p class="fs-4">У вас еще нет списков.</p>
+        </div>
+      </div>
     {% endif %}
   </div>
 {% endblock %}

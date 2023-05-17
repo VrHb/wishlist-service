@@ -32,8 +32,8 @@
       <div class="text-center col-auto mb-4">
         <p>Войти через:</p>
         <div class="text-center btn-group">
-          <a href="{% url 'social:begin' 'vk-oauth2' %}" class="btn btn-outline-primary">VK</a>
-          <a href="{% url 'social:begin' 'github' %}" class="btn btn-outline-success">GitHub</a>
+          <a href="{% url 'social:begin' 'vk-oauth2' %}?next={{ request.GET.next }}" class="btn btn-outline-primary">VK</a>
+          <a href="{% url 'social:begin' 'github' %}?next={{ request.GET.next }}" class="btn btn-outline-success">GitHub</a>
           <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.GET.next }}" class="btn btn-outline-warning">Google</a>
         </div>
       </div>
