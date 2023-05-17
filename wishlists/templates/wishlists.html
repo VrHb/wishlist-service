@@ -7,6 +7,16 @@
 {% endblock %}
 
 {% block content %}
+  <div class="container-sm">
+    <figure class="text-center">
+      <blockquote class="blockquote">
+        <p>Хороший подарок - подарок желанный!</p>
+      </blockquote>
+      <figcaption class="blockquote-footer">
+        Вероника Маринина <cite title="Source Title">Дневники Вероники</cite>
+      </figcaption>
+    </figure>
+  </div>
   <div class="col justify-content-center d-flex">
     <form class="row justify-content-center" method="POST">
       {% csrf_token %}
