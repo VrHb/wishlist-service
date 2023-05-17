@@ -71,6 +71,10 @@ def wishlists_view(request):
         "wishlists": wishlists,
         'form': form
     }
+    if request.GET.get('delete'):
+        wishlist_id = int(request.GET.get('delete'))
+        Wishlist.objects.filter(id=wishlist_id).delete()
+        return redirect('wishlists')
     return render(request, template_name="wishlists.html", context=wishlists_params)
 
 
@@ -126,12 +130,6 @@ def shared_wishlist_view(request, user_id, wishlist_id):
         return redirect(f'/share/{user_id}/{wishlist_id}')
     wishlist_params = {'wishlist': wishlist, 'wishes': wishes}
     return render(request, template_name="share.html", context=wishlist_params)
-
-
-@login_required(login_url='login')
-def delete_wishlist(request, wishlist_id):
-    Wishlist.objects.filter(id=wishlist_id).delete()
-    return redirect('wishlists')
 
 
 @login_required(login_url='login')

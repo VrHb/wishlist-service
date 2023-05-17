@@ -28,7 +28,9 @@
         {% if wishlist %}
             <a href="{% url 'wishlist' wishlist.id %}" class="link-secondary">Перейти к списку</a>
         </div>
-        <a href="{% url 'del_wishlist' wishlist.id %}" class="link-danger">Удалить</a>
+        <form method="GET">
+          <button type="submit" class="btn btn-outline-danger" name="delete" value="{{ wishlist.id }}">Удалить</button>
+        </form>
         {% endif %}
       </li>
     {%  endfor %}
