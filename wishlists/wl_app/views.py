@@ -3,6 +3,7 @@ import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
+from django.urls import reverse
 
 from .models import Wishlist, Gift, Wish
 from .forms import WishForm, WishlistForm, LoginForm, RegisterUser
@@ -92,7 +93,7 @@ def wishlist_view(request, wishlist_id):
                 link=wish_link,
                 price=wish_price
             )
-            return redirect(f'/{wishlist_id}')
+            return redirect(f'/lists/{wishlist_id}')
         else:
             logger.info(form.errors.as_data())
     else:
