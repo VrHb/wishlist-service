@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models.deletion import CASCADE
+from django.urls import reverse
 
 from .forms import WishForm
 
@@ -21,6 +22,10 @@ class Wishlist(models.Model):
         blank=True,
         null=True
     )
+
+
+    def get_absolute_url(self):
+        return reverse('wishlist', kwargs={'wishlist_id': self.pk})
 
 class Wish(models.Model):
     '''Желание пользователя'''

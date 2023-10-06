@@ -1,19 +1,23 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView, ListView
 
 from . import views
+from .views import LoginView, RegistrationView, WishlistsView, WishlistView, \
+    SharedWishlistView, SelectedGiftsView, LogoutView
 
 
 urlpatterns = [
-    path('', views.main_view, name='main'),
-    path('wishlists/', views.wishlists_view, name='wishlists'),
-    path('lists/<int:wishlist_id>', views.wishlist_view, name='wishlist'),
-    path('share/<int:user_id>/<int:wishlist_id>', views.shared_wishlist_view, name='share_wishlist'),
-    path('gifts/', views.selected_gifts_view, name='gifts'),
-    path('about/', views.about_view, name='about'),
-    path('logout/', views.logout_view, name='logout'),
-    path('login/', views.login_view, name='login'),
-    path('registration/', views.registration_view, name='registration'),
+    path('', TemplateView.as_view(template_name='index.html'), name='main'),
+    path('wishlists/', WishlistsView.as_view(), name='wishlists'),
+    path('lists/<int:wishlist_id>', WishlistView.as_view(), name='wishlist'),
+    path('share/<int:user_id>/<int:wishlist_id>', SharedWishlistView.as_view(), name='share_wishlist'),
+    path('gifts/', SelectedGiftsView.as_view(), name='gifts'),
+    path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    
+    path('login/', LoginView.as_view(), name='login'),
+    path('registration/', RegistrationView.as_view(), name='registration')
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

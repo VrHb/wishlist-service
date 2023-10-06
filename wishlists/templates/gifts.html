@@ -1,44 +1,37 @@
-{% extends 'base.html' %}
-
-{% load static %}
-
-{% block title %}
+{% extends 'base.html' %} {% load static %} {% block title %}
 <title>Make a wish - Выбранные подарки</title>
-{% endblock %}
-
-{% block content %}
-  <div class="list-group list-group-flush shadow p-3 mb-4 bg-body-tertiary rounded">
-    {% if not gifts %}
-      <div class="p-5 mb-4 bg-light text-center rounded-3">
-        <div class="container-fluid py-5">
-          <h1 class="display-8 fw-bold">🤑 нет выбранных подарков</h1>
-          <p class="fs-4">Наверное вы никому не хотите ничего дарить.</p>
-        </div>
-      </div>
-    {% endif %}
-    {% for gift in gifts %}
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          {% if gift %}
-            <div class="fw-bold">{{ gift.title }}</div>
-          {% if gift.link %}
-            <a href="{{ gift.link }}" class="link-secondary">Где купить</a>
-          {% endif %}
-          {% if gift.price %}
-            <span class="badge bg-info">{{ gift.price }} руб.</span>
-          {% endif %}
-          {% endif %}
-        </div>
-        {% if gift.wish_id %}
-          <form method="POST">
-            {% csrf_token %}
-            <input type=hidden name=wish_id value="{{ gift.wish_id }}">
-            <input type=hidden name=gift_id value="{{ gift.id }}">
-            <button type="submit" class="btn btn-outline-secondary">Не дарить</button>
-          </form>
-        {% endif %}
-      </li>
-    {% endfor %}
+{% endblock %} {% block content %}
+<div
+  class="list-group list-group-flush shadow p-3 mb-4 bg-body-tertiary rounded"
+>
+  {% if not gifts %}
+  <div class="p-5 mb-4 bg-light text-center rounded-3">
+    <div class="container-fluid py-5">
+      <h1 class="display-8 fw-bold">🤑 нет выбранных подарков</h1>
+      <p class="fs-4">Наверное вы никому не хотите ничего дарить.</p>
+    </div>
   </div>
+  {% endif %} {% for gift in gifts %}
+  <li class="list-group-item d-flex justify-content-between align-items-start">
+    <div class="ms-2 me-auto">
+      {% if gift %}
+      <div class="fw-bold">{{ gift.title }}</div>
+      {% if gift.link %}
+      <a href="{{ gift.link }}" class="link-secondary">Где купить</a>
+      {% endif %} {% if gift.price %}
+      <span class="badge bg-info">{{ gift.price }} руб.</span>
+      {% endif %} {% endif %}
+    </div>
+    {% if gift.wish_id %}
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="wish_id" value="{{ gift.wish_id }}" />
+      <input type="hidden" name="gift_id" value="{{ gift.id }}" />
+      <button type="submit" class="btn btn-outline-secondary">Не дарить</button>
+    </form>
+    {% endif %}
+  </li>
+  {% endfor %}
+</div>
 
 {% endblock %}

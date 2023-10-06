@@ -1,9 +1,12 @@
 import logging
 
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
-from django.urls import reverse
+from django.views.generic import DetailView, ListView
+from django.views import View
+from django.http import HttpRequest, HttpResponse
+from django.db.models import QuerySet
 
 from .models import Wishlist, Gift, Wish
 from .forms import WishForm, WishlistForm, LoginForm, RegisterUser
@@ -11,52 +14,76 @@ from .forms import WishForm, WishlistForm, LoginForm, RegisterUser
 
 logger = logging.getLogger(__name__)
 
-def login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
+
+# TODO can use FormView there
+class LoginView(View):
+    form_class = LoginForm
+    template_name = 'login.html'
+
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        form = self.form_class
+        return render(request, self.template_name, {'form': form})
+
+
+    def post(self, request: HttpRequest) -> HttpResponse:
+        form = self.form_class(request.POST)
         if form.is_valid():
-            cleaned_data = form.cleaned_data
-            user = authenticate(
-                username=cleaned_data['username'],
-                password=cleaned_data['password']
-            )
-            if user is not None:
-                login(request, user)
-                if request.GET.get('next'):
-                    return redirect(request.GET.get('next'))
-                return redirect('wishlists')
-    else:
-        form = LoginForm()
-    return render(request, 'login.html', {'form': form})
+             cleaned_data = form.cleaned_data
+             authenticate_user = authenticate(
+                 username=cleaned_data['username'],
+                 password=cleaned_data['password']
+             )
+             logger.info(authenticate_user)
+             if authenticate_user:
+                 login(request, authenticate_user)
+                 if request.GET.get('next'):
+                     return redirect(request.GET.get('next'))
+                 return redirect('wishlists')
+        return render(request, self.template_name, {'form': form})
+
+# TODO can use FormView there
+class RegistrationView(View):
+    form_class = RegisterUser 
+    template_name = 'registration.html'
 
 
-def registration_view(request):
-    if request.method == 'POST':
-        form = RegisterUser(request.POST)
+    def get(self, request: HttpRequest) -> HttpResponse:
+        form = self.form_class
+        return render(request, self.template_name, {'form': form})
+
+
+    def post(self, request: HttpRequest) -> HttpResponse:
+        form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
-            cleaned_data = form.cleaned_data
-            user = authenticate(
-                username=cleaned_data['username'],
-                password=cleaned_data['password1']
-            )
-            login(request, user)
-            return redirect('wishlists')
-    else:
-        form = RegisterUser()
-    return render(request, 'registration.html', {'form': form})
+             form.save()
+             cleaned_data = form.cleaned_data
+             user = authenticate(
+                 username=cleaned_data['username'],
+                 password=cleaned_data['password1']
+             )
+             login(request, user)
+             return redirect('wishlists')
+        return render(request, self.template_name, {'form': form})
+
+# TODO use login required decorator
+class WishlistsView(ListView):
+    form_class = WishlistForm 
+    template_name = 'wishlists.html'
+    context_object_name = 'wishlists'
 
 
-def main_view(request):
-    return render(request, template_name="index.html", context={})
+    def get_queryset(self) -> QuerySet:
+        if self.request.GET.get('delete'):
+            wishlist_id = int(self.request.GET.get('delete'))
+            Wishlist.objects.filter(id=wishlist_id).delete()
+        user = self.request.user
+        return Wishlist.objects.filter(user=user)
 
 
-@login_required(login_url='login')
-def wishlists_view(request):
-    user = request.user
-    wishlists = Wishlist.objects.filter(user=user)
-    if request.method == 'POST':
-        form = WishlistForm(request.POST)
+    def post(self, request: HttpRequest) -> HttpResponse:
+        user = self.request.user
+        form = self.form_class(request.POST)
         if form.is_valid():
             wishlist_title = form.cleaned_data.get('wishlist', False)
             Wishlist.objects.create(
@@ -64,27 +91,33 @@ def wishlists_view(request):
                 title=wishlist_title
             )
             return redirect('wishlists')
-        else:
-            logger.info(form.errors.as_data())
-    else:
-        form = WishForm() 
-    wishlists_params = {
-        "wishlists": wishlists,
-        'form': form
-    }
-    if request.GET.get('delete'):
-        wishlist_id = int(request.GET.get('delete'))
-        Wishlist.objects.filter(id=wishlist_id).delete()
-        return redirect('wishlists')
-    return render(request, template_name="wishlists.html", context=wishlists_params)
+        return render(request, self.template_name, {'form': form})
+
+# TODO may be use DetailView
+class WishlistView(ListView):
+    model = Wishlist
+    form_class = WishForm 
+    template_name = 'wishlist.html'
+    context_object_name = 'wishlist'
 
 
-@login_required(login_url='login')
-def wishlist_view(request, wishlist_id):
-    wishlist = get_object_or_404(Wishlist, pk=wishlist_id) 
-    if request.method == 'POST':
-        form = WishForm(request.POST)
+    def get_queryset(self) -> QuerySet:
+        if self.request.GET.get('delete'):
+            wishlist_id = int(self.request.GET.get('delete'))
+            Wishlist.objects.filter(id=wishlist_id).delete()
+        return Wishlist.objects.get(id=self.kwargs['wishlist_id'])
+
+
+    def get_context_data(self, **kwargs) -> dict:
+        context = super(WishlistView, self).get_context_data(**kwargs)
+        logger.info(context)
+        return context
+    
+
+    def post(self, request: HttpRequest, wishlist_id: int) -> HttpResponse:
+        form = self.form_class(request.POST)
         if form.is_valid():
+            wishlist = Wishlist.objects.get(id=wishlist_id)
             wish_title = form.cleaned_data.get('wish')
             wish_link = form.cleaned_data.get('link')
             wish_price = form.cleaned_data.get('price')
@@ -93,68 +126,56 @@ def wishlist_view(request, wishlist_id):
                 link=wish_link,
                 price=wish_price
             )
-            return redirect(f'/lists/{wishlist_id}')
-        else:
-            logger.info(form.errors.as_data())
-    else:
-        form = WishForm() 
-    if request.GET.get('delete'):
-        delete_wish_id = int(request.GET.get('delete'))
-        wishlist.wishes.filter(id=delete_wish_id).delete() 
-    wishlist_params = {
-        'wishlist': wishlist,
-        'wishes': wishlist.wishes.all(),
-        'form': form
-    }
-    return render(request, template_name="wishlist.html", context=wishlist_params)
+            return redirect('wishlist', wishlist_id=wishlist_id)
+        return render(request, self.template_name, {'form': form})
+
+class SharedWishlistView(DetailView):
+    model = Wishlist
+    template_name = 'share.html'
+    pk_url_kwarg = 'wishlist_id'
+    context_object_name = 'wishlist'
 
 
-@login_required(login_url='login')
-def shared_wishlist_view(request, user_id, wishlist_id):
-    user = request.user
-    wishlist = Wishlist.objects.filter(user=user_id).get(id=wishlist_id)
-    wishes = wishlist.wishes.all()
-    logger.info(wishes)
-    if request.GET.get('will_give'):
-        wish_id = int(request.GET.get('will_give'))
-        selected_wish = wishes.get(id=wish_id)
-        selected_wish.is_given = True
-        selected_wish.save()
-        logger.info(selected_wish.id)
-        Gift.objects.create(
-            user=user,
-            title=selected_wish.title,
-            price=selected_wish.price,
-            link=selected_wish.link,
-            wish_id=selected_wish.id
-        )
-        return redirect(f'/share/{user_id}/{wishlist_id}')
-    wishlist_params = {'wishlist': wishlist, 'wishes': wishes}
-    return render(request, template_name="share.html", context=wishlist_params)
+    # TODO move will give logic to another func
+    def get_context_data(self, **kwargs) -> dict:
+        context = super(SharedWishlistView, self).get_context_data(**kwargs)
+        wishlist = Wishlist.objects.get(id=self.kwargs['wishlist_id'])
+        context['wishes'] = wishlist.wishes.all()
+        if self.request.GET.get('will_give'):
+            wish_id = int(self.request.GET.get('will_give'))
+            selected_wish = context['wishes'].get(id=wish_id)
+            selected_wish.is_given = True
+            selected_wish.save()
+            logger.info(selected_wish.id)
+            Gift.objects.create(
+                user=self.request.user,
+                title=selected_wish.title,
+                price=selected_wish.price,
+                link=selected_wish.link,
+                wish_id=selected_wish.id
+            )
+        logger.info(context)
+        return context
 
+class SelectedGiftsView(ListView):
+    model = Gift
+    template_name = 'gifts.html'
+    context_object_name = 'gifts'
+    
 
-@login_required(login_url='login')
-def selected_gifts_view(request):
-    user = request.user
-    gifts = Gift.objects.filter(user=user)
-    wishes = Wish.objects.all()
-    if request.POST:
+    def post(self, request: HttpRequest) -> HttpResponse:
+        self.object_list = self.get_queryset()
+        gifts = self.object_list
         gift_id = int(request.POST.get('gift_id'))
         gifts.get(id=gift_id).delete()
+        wishes = Wish.objects.all()
         wish_id = int(request.POST.get('wish_id'))
         selected_wish = wishes.get(id=wish_id)
         selected_wish.is_given = False 
         selected_wish.save()
         return redirect('gifts')
-    gifts_params = {'gifts': gifts}
-    return render(request, template_name='gifts.html', context=gifts_params)
 
-
-def about_view(request):
-    return render(request, template_name='about.html', context={})
-
-
-def logout_view(request):
-    logout(request)
-    return redirect('main')
-
+class LogoutView(View):
+    def get(self, request: HttpRequest) -> HttpResponse:
+        logout(request)
+        return redirect('main')
