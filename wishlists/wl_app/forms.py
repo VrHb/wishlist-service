@@ -1,6 +1,6 @@
 from django import forms 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.forms import TextInput, PasswordInput
 
 
@@ -14,7 +14,7 @@ class WishForm(forms.Form):
     link = forms.URLField(required=False)
     price = forms.FloatField(min_value=0, max_value=999999, required=False)
 
-class LoginForm(forms.Form):
+class LoginForm(AuthenticationForm):
     username = forms.CharField(
         widget=TextInput(attrs={
             'class': 'form-control col-auto mb-3',

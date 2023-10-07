@@ -19,6 +19,11 @@
       {{ field }}
       {{ field.errors }} 
     {% endfor %}
+      {% for message in messages %}
+        <div class="alert alert-warning" role="alert">
+        {{ message }}
+        </div>
+      {% endfor %}
     <div class="col-auto mb-2 form-check">
       <input
         class="form-check-input"

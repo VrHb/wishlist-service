@@ -1,12 +1,17 @@
 import logging
 
 from django.shortcuts import render, redirect
+from django.forms import Form
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
 from django.contrib.auth import login, logout, authenticate
-from django.views.generic import DetailView, ListView
+from django.contrib.auth.views import LoginView
+from django.views.generic import DetailView, FormView, ListView
 from django.views import View
 from django.http import HttpRequest, HttpResponse
 from django.db.models import QuerySet
+from django.contrib import messages
+from django.views.generic.edit import FormMixin
 
 from .models import Wishlist, Gift, Wish
 from .forms import WishForm, WishlistForm, LoginForm, RegisterUser
@@ -15,32 +20,22 @@ from .forms import WishForm, WishlistForm, LoginForm, RegisterUser
 logger = logging.getLogger(__name__)
 
 
-# TODO can use FormView there
-class LoginView(View):
-    form_class = LoginForm
+class UserLoginView(LoginView):
+    authentication_form = LoginForm
     template_name = 'login.html'
+    redirect_authenticated_user = True
 
 
-    def get(self, request: HttpRequest) -> HttpResponse:
-        form = self.form_class
-        return render(request, self.template_name, {'form': form})
+    def get_success_url(self):
+        return reverse_lazy('wishlists')
 
 
-    def post(self, request: HttpRequest) -> HttpResponse:
-        form = self.form_class(request.POST)
-        if form.is_valid():
-             cleaned_data = form.cleaned_data
-             authenticate_user = authenticate(
-                 username=cleaned_data['username'],
-                 password=cleaned_data['password']
-             )
-             logger.info(authenticate_user)
-             if authenticate_user:
-                 login(request, authenticate_user)
-                 if request.GET.get('next'):
-                     return redirect(request.GET.get('next'))
-                 return redirect('wishlists')
-        return render(request, self.template_name, {'form': form})
+    def form_invalid(self, form: Form) -> HttpResponse:
+        messages.error(
+            self.request,
+            'Неправильный пароль или имя пользователя!'
+        )
+        return self.render_to_response(self.get_context_data(form=form)) 
 
 # TODO can use FormView there
 class RegistrationView(View):
