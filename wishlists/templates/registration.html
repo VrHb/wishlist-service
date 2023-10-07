@@ -16,8 +16,12 @@
   <form method="post">
     {% csrf_token %} 
     {% for field in form %} 
-      {{ field.errors }} 
       {{ field }} 
+      {% if field.errors %}
+        <div class="alert alert-warning" role="alert">
+          {{ field.errors }} 
+        </div>
+      {% endif %}
     {%endfor %}
     <div class="col-auto mb-4 form-check">
       <input

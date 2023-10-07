@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.views import LoginView
-from django.views.generic import DetailView, FormView, ListView
+from django.views.generic import CreateView, DetailView, FormView, ListView
 from django.views import View
 from django.http import HttpRequest, HttpResponse
 from django.db.models import QuerySet
@@ -35,31 +35,14 @@ class UserLoginView(LoginView):
             self.request,
             'Неправильный пароль или имя пользователя!'
         )
-        return self.render_to_response(self.get_context_data(form=form)) 
+        response = super().form_invalid(form)
+        response.status_code = 401
+        return response
 
-# TODO can use FormView there
-class RegistrationView(View):
+class RegistrationView(CreateView):
     form_class = RegisterUser 
     template_name = 'registration.html'
-
-
-    def get(self, request: HttpRequest) -> HttpResponse:
-        form = self.form_class
-        return render(request, self.template_name, {'form': form})
-
-
-    def post(self, request: HttpRequest) -> HttpResponse:
-        form = self.form_class(request.POST)
-        if form.is_valid():
-             form.save()
-             cleaned_data = form.cleaned_data
-             user = authenticate(
-                 username=cleaned_data['username'],
-                 password=cleaned_data['password1']
-             )
-             login(request, user)
-             return redirect('wishlists')
-        return render(request, self.template_name, {'form': form})
+    success_url = reverse_lazy('login')
 
 # TODO use login required decorator
 class WishlistsView(ListView):
