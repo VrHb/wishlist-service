@@ -2,16 +2,14 @@ import logging
 
 from django.shortcuts import render, redirect
 from django.forms import Form
-from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
-from django.views.generic import CreateView, DetailView, FormView, ListView
+from django.views.generic import CreateView, DetailView, ListView
 from django.views import View
 from django.http import HttpRequest, HttpResponse
 from django.db.models import QuerySet
 from django.contrib import messages
-from django.views.generic.edit import FormMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
@@ -20,7 +18,6 @@ from .forms import WishForm, WishlistForm, LoginForm, RegisterUser
 
 
 logger = logging.getLogger(__name__)
-
 
 class UserLoginView(LoginView):
     authentication_form = LoginForm
@@ -175,3 +172,7 @@ class LogoutView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
         logout(request)
         return redirect('main')
+
+class View404(View):
+    template_name = '404.html'
+

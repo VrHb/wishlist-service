@@ -1,0 +1,24 @@
+{% extends 'base.html' %} 
+
+{% load static %} 
+
+{% block title %}
+<title>Make a wish - 404</title>
+{% endblock %}
+
+{% block content %}
+<div
+  class="list-group list-group-flush shadow p-3 mb-4 bg-body-tertiary rounded"
+>
+  <div class="p-5 mb-4 bg-light text-center rounded-3">
+    <div class="container-fluid py-5">
+      <h1 class="fw-bold">404 - Опа!</h1>
+      <p class="fs-4">Не нашлась страничка!</p>
+      <a href="{% url 'main' %}">
+        <button type="button" class="text-center btn btn-primary btn-lg px-4 me-sm-3">На главную</button>
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

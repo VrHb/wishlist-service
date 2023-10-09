@@ -1,12 +1,13 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView
 
-from . import views
 from .views import UserLoginView, RegistrationView, WishlistsView, WishlistView, \
-    SharedWishlistView, SelectedGiftsView, LogoutView
+    SharedWishlistView, SelectedGiftsView, View404, LogoutView
 
+
+handler404 = View404.as_view()
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='main'),
