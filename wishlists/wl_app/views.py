@@ -12,6 +12,8 @@ from django.db.models import QuerySet
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.views import RedirectURLMixin
+from django.utils.functional import Promise
 
 from .models import Wishlist, Gift, Wish
 from .forms import WishForm, WishlistForm, LoginForm, RegisterUser
@@ -19,13 +21,15 @@ from .forms import WishForm, WishlistForm, LoginForm, RegisterUser
 
 logger = logging.getLogger(__name__)
 
-class UserLoginView(LoginView):
+class UserLoginView(LoginView, RedirectURLMixin):
     authentication_form = LoginForm
     template_name = 'login.html'
-    redirect_authenticated_user = True
+    redirect_field_name = 'next'
 
 
-    def get_success_url(self):
+    def get_success_url(self) -> str | Promise:
+        if self.get_redirect_url():
+            return self.get_redirect_url()
         return reverse_lazy('wishlists')
 
 
