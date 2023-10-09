@@ -15,14 +15,23 @@
 <div class="col justify-content-center d-flex">
   <form method="post">
     {% csrf_token %} 
+    {% for message in messages %}
+      {% if message.tags == 'success' %}
+        <div class="alert alert-success" role="alert">
+          {{ message }}
+        </div>
+      {% endif %}
+    {% endfor %}
     {% for field in form %} 
       {{ field }}
       {{ field.errors }} 
     {% endfor %}
       {% for message in messages %}
-        <div class="alert alert-warning" role="alert">
-        {{ message }}
-        </div>
+        {% if message.tags == 'error' %}
+          <div class="alert alert-warning" role="alert">
+            {{ message }}
+          </div>
+        {% endif %}
       {% endfor %}
     <div class="col-auto mb-2 form-check">
       <input

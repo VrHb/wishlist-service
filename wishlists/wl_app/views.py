@@ -13,6 +13,7 @@ from django.db.models import QuerySet
 from django.contrib import messages
 from django.views.generic.edit import FormMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 
 from .models import Wishlist, Gift, Wish
 from .forms import WishForm, WishlistForm, LoginForm, RegisterUser
@@ -40,11 +41,11 @@ class UserLoginView(LoginView):
         response.status_code = 401
         return response
 
-class RegistrationView(CreateView):
+class RegistrationView(SuccessMessageMixin, CreateView):
     form_class = RegisterUser 
     template_name = 'registration.html'
     success_url = reverse_lazy('login')
-    # TODO send message after success reg to login page
+    success_message = 'Вы успешно зарегистрировались!'
 
 class WishlistsView(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
