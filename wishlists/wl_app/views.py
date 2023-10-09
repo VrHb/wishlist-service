@@ -12,6 +12,7 @@ from django.http import HttpRequest, HttpResponse
 from django.db.models import QuerySet
 from django.contrib import messages
 from django.views.generic.edit import FormMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Wishlist, Gift, Wish
 from .forms import WishForm, WishlistForm, LoginForm, RegisterUser
@@ -43,9 +44,10 @@ class RegistrationView(CreateView):
     form_class = RegisterUser 
     template_name = 'registration.html'
     success_url = reverse_lazy('login')
+    # TODO send message after success reg to login page
 
-# TODO use login required decorator
-class WishlistsView(ListView):
+class WishlistsView(LoginRequiredMixin, ListView):
+    login_url = reverse_lazy('login')
     form_class = WishlistForm 
     template_name = 'wishlists.html'
     context_object_name = 'wishlists'
@@ -53,30 +55,45 @@ class WishlistsView(ListView):
 
     def get_queryset(self) -> QuerySet:
         if self.request.GET.get('delete'):
-            wishlist_id = int(self.request.GET.get('delete'))
+            wishlist_id = self.request.GET.get('delete')
             Wishlist.objects.filter(id=wishlist_id).delete()
         user = self.request.user
         return Wishlist.objects.filter(user=user)
 
 
+    def get_context_data(self, **kwargs) -> dict:
+        context = super(WishlistsView, self).get_context_data(**kwargs)
+        form = self.form_class()
+        context['form'] = form
+        logger.info(context)
+        return context
+
+
     def post(self, request: HttpRequest) -> HttpResponse:
+        self.object_list = self.get_queryset()
         user = self.request.user
         form = self.form_class(request.POST)
+        context = self.get_context_data()
         if form.is_valid():
             wishlist_title = form.cleaned_data.get('wishlist', False)
             Wishlist.objects.create(
                 user=user,
                 title=wishlist_title
             )
-            return redirect('wishlists')
-        return render(request, self.template_name, {'form': form})
+            return self.render_to_response(context)
+        messages.error(
+            self.request,
+            'Введите корректное название списка!'
+        )
+        return self.render_to_response(context)
 
 # TODO may be use DetailView
-class WishlistView(ListView):
+class WishlistView(LoginRequiredMixin, ListView):
     model = Wishlist
     form_class = WishForm 
     template_name = 'wishlist.html'
     context_object_name = 'wishlist'
+    success_url = reverse_lazy('login')
 
 
     def get_queryset(self) -> QuerySet:

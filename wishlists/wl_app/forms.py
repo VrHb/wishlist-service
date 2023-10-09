@@ -7,7 +7,13 @@ from django.forms import TextInput, PasswordInput
 User = get_user_model()
 
 class WishlistForm(forms.Form):
-    wishlist = forms.CharField(max_length=150)
+    wishlist = forms.CharField(max_length=150,
+        widget=TextInput(attrs={
+            'class': 'form-control text-center col-auto mb-3',
+            'type': 'text',
+            'placeholder': 'Название списка'
+            }),
+    )
 
 class WishForm(forms.Form):
     wish = forms.CharField(required=True, max_length=100)
