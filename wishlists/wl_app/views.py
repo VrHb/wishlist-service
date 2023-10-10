@@ -87,34 +87,45 @@ class WishlistsView(LoginRequiredMixin, ListView):
             self.request,
             'Введите корректное название списка!'
         )
-        return self.render_to_response(context)
+        response = self.render_to_response(context)
+        response.status_code = 400
+        return response
 
-# TODO may be use DetailView
 class WishlistView(LoginRequiredMixin, ListView):
     model = Wishlist
     form_class = WishForm 
     template_name = 'wishlist.html'
     context_object_name = 'wishlist'
-    success_url = reverse_lazy('login')
+    login_url = reverse_lazy('login')
 
 
     def get_queryset(self) -> QuerySet:
+        user = self.request.user
+        wishlist = Wishlist.objects.filter(
+            user=user,
+            id=self.kwargs['wishlist_id']
+        ).first()
         if self.request.GET.get('delete'):
-            wishlist_id = int(self.request.GET.get('delete'))
-            Wishlist.objects.filter(id=wishlist_id).delete()
-        return Wishlist.objects.get(id=self.kwargs['wishlist_id'])
+            wish_id = self.request.GET.get('delete')
+            wishlist.wishes.filter(id=wish_id).delete()
+        return wishlist
 
 
-    def get_context_data(self, **kwargs) -> dict:
-        context = super(WishlistView, self).get_context_data(**kwargs)
-        logger.info(context)
-        return context
-    
+    def get(self, request: HttpRequest, wishlist_id: int) -> HttpResponse:
+        self.object_list = self.get_queryset()
+        wishlist = self.get_queryset()
+        if not wishlist:
+            return redirect('wishlists')
+        context = self.get_context_data()
+        return self.render_to_response(context)
+
 
     def post(self, request: HttpRequest, wishlist_id: int) -> HttpResponse:
+        user = self.request.user
+        self.object_list = self.get_queryset()
         form = self.form_class(request.POST)
         if form.is_valid():
-            wishlist = Wishlist.objects.get(id=wishlist_id)
+            wishlist = Wishlist.objects.filter(user=user, id=wishlist_id).first()
             wish_title = form.cleaned_data.get('wish')
             wish_link = form.cleaned_data.get('link')
             wish_price = form.cleaned_data.get('price')
@@ -124,7 +135,10 @@ class WishlistView(LoginRequiredMixin, ListView):
                 price=wish_price
             )
             return redirect('wishlist', wishlist_id=wishlist_id)
-        return render(request, self.template_name, {'form': form})
+        context = self.get_context_data()
+        context['form'] = form
+        response = self.render_to_response(context)
+        return response
 
 class SharedWishlistView(DetailView):
     model = Wishlist
