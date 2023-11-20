@@ -150,7 +150,9 @@ class SharedWishlistView(DetailView):
     # TODO move will give logic to another func
     def get_context_data(self, **kwargs) -> dict:
         context = super(SharedWishlistView, self).get_context_data(**kwargs)
-        wishlist = Wishlist.objects.get(id=self.kwargs['wishlist_id'])
+        user_id = self.kwargs['user_id']
+        wishlist_id = self.kwargs['wishlist_id']
+        wishlist = Wishlist.objects.get(user=user_id, id=wishlist_id)
         context['wishes'] = wishlist.wishes.all()
         if self.request.GET.get('will_give'):
             wish_id = int(self.request.GET.get('will_give'))
@@ -165,7 +167,6 @@ class SharedWishlistView(DetailView):
                 link=selected_wish.link,
                 wish_id=selected_wish.id
             )
-        logger.info(context)
         return context
 
 class SelectedGiftsView(ListView):
@@ -174,13 +175,21 @@ class SelectedGiftsView(ListView):
     context_object_name = 'gifts'
     
 
+    def get_queryset(self) -> QuerySet:
+        user = self.request.user
+        gifts = Gift.objects.filter(
+            user=user,
+        )
+        return gifts
+
+
     def post(self, request: HttpRequest) -> HttpResponse:
         self.object_list = self.get_queryset()
         gifts = self.object_list
-        gift_id = int(request.POST.get('gift_id'))
+        gift_id = request.POST.get('gift_id')
         gifts.get(id=gift_id).delete()
         wishes = Wish.objects.all()
-        wish_id = int(request.POST.get('wish_id'))
+        wish_id = request.POST.get('wish_id')
         selected_wish = wishes.get(id=wish_id)
         selected_wish.is_given = False 
         selected_wish.save()
