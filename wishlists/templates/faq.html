@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+<title>Make a wish - Как использовать сервис</title>
+{% endblock %}
+
+{% block content %}
+      <h1 class="text-body-emphasis">Небольшое FAQ, оно же ЧАВО, оно же Как пользоваться</h1>
+      <p class="fs-5 col-md-8">которое поможет избежать:</p>
+      <figure class="text-end">
+        <blockquote class="blockquote">
+          <p>Я что-то нажал/нажала и все пропало, ничего не высветилось 🙄</p>
+        </blockquote>
+        <figcaption class="blockquote-footer">
+         Чей-то мам, пап 
+        </figcaption>
+      </figure>
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+         Как зарегистрироваться 
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <p>
+            <strong>Наш сервис поддерживает авторизацию через социальные сети.</strong>Чтобы зарегистрироваться нужно нажать клавишу социальной сети, которую вы хотите использовать для входа.
+          </p>
+          <p>
+            На текущий момент сервис поддерживает следующие социальные сети:
+          <ul>
+            <li>
+            Вконтакте
+            </li>
+            <li>
+            Google
+            </li>
+            <li>
+            GitHub
+            </li>
+          </ul>
+          </p>
+          <p>
+            Сами кнопки выглядят вот так:
+            <div class="text-center btn-group">
+              <a
+                href=""
+                class="btn btn-outline-primary"
+                >VK</a
+              >
+              <a
+                href=""
+                class="btn btn-outline-success"
+                >GitHub</a
+              >
+              <a
+                href=""
+                class="btn btn-outline-warning"
+                >Google</a
+              >
+            </div>
+          </p>
+          <p>
+           Когда кликните по ним, вы сразу же войдете. 
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+         Создание списков 
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <p> Для создания списка нужно ввести название списка, ну например "День рождения"</p>
+          <p>И нажать вот такую синюю кнопку:
+          </p>
+          <p>
+            <button type="submit" class="btn btn-primary btn">Добавить список</button>
+          </p>
+          <p>
+          После создания списка будет так:
+          </p>
+
+          <p>
+            <div class="list-group  shadow p-3 mb-5 bg-body-tertiary rounded"
+>
+              <div class="fw-bold">День рождения</div>
+              <a href="#collapseThree" class="link-secondary">Перейти к списку</a>
+            </div> 
+          </p>
+          <p>
+          Когда нажмете перейти к списку, вы сможете создавать желания внутри списка
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+         Как добавить желание 
+        </button>
+      </h2>
+      <div id="collapseThree" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          <p>
+            Добавить желание можно нажав на такую зеленую кнопку:
+          </p>
+          <p>
+            <button
+              type="button"
+              class="btn btn-outline-success mb-4"
+              data-bs-toggle="modal"
+              data-bs-target="#staticBackdrop"
+            >
+              Добавить желание
+            </button>
+          </p>
+          <p>
+            И потом в появившимся окошке ввести параметры желания: 
+            <ul>
+              <li>
+                Название 
+              </li>
+              <li>
+                Ссылку на ресурс, где можно приобрести 
+              </li>
+              <li>
+                Стоимость, пока в рублях
+              </li>
+            </ul>
+          </p>
+          <p>
+            <strong>Обязательным</strong> является только название желания
+
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+         Как поделиться желанием 
+        </button>
+      </h2>
+      <div id="collapseFour" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          <p>
+            Нужно нажать вот эту кнопку:
+          </p>
+          <p>
+    <div class="dropdown">
+      <a
+        class="btn btn-outline-success dropdown-toggle"
+        href="#"
+        role="button"
+        id="dropdownMenuLink"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        Поделиться
+      </a>
+
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <li>
+          <a
+            class="dropdown-item"
+            href="#collapseFour"
+            >Вконтакте</a
+          >
+        </li>
+        <li>
+          <a
+            class="dropdown-item"
+            href="#collapseFour"
+            >Telegram</a
+          >
+        </li>
+        <li>
+          <a
+            class="dropdown-item"
+            href="#collpseFour"
+            >WhatsApp</a
+          >
+        </li>
+      </ul>
+    </div>
+          </p>
+          <p>
+            Выбрать социальную сеть, а дальше чат куда отправить ссылку на список желаний 
+          </p>
+          <p>
+          На данный момент поделиться можно в слудующих социальных сетях/мессенджерах:
+            <ul>
+              <li>
+                Telegram 
+              </li>
+              <li>
+                WhatsApp 
+              </li>
+              <li>
+               Вконтакте 
+              </li>
+            </ul>
+          </p>
+          <p>
+          Этот функционал является ключевым для нашего сервиса и <strong>зарегистрированный</strong> пользователь сможет выбрать подарок, и увидит его у себя в меню "выбранные подарки"
+
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

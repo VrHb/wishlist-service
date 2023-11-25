@@ -19,6 +19,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     
     path('login/', UserLoginView.as_view(), name='login'),
-    path('registration/', RegistrationView.as_view(), name='registration')
+    path('registration/', RegistrationView.as_view(), name='registration'),
+    path('faq/', TemplateView.as_view(template_name='faq.html'), name='faq'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
