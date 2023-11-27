@@ -27,7 +27,6 @@
   <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
       <a href="{% url 'main' %}" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-        <img class="bi me-ml-2" width="40" height="32" src="{% static 'svg/brush.svg'%}">
         <span class="fs-4">Make a wish</span>
       </a>
       {% if user.is_authenticated %}
@@ -72,7 +71,7 @@
       <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
         <li class="ms-3">
           <a href="https://www.instagram.com/">
-            <img src="{% static 'svg/instagram.svg' %}" class="bi" width="30" height="24">
+            <img class="mb-3 mb-md-0" src="{% static 'svg/instagram.svg' %}" class="bi" width="30" height="24">
           </a>
         </li>
       </ul>
