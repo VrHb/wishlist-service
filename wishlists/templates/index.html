@@ -16,9 +16,19 @@
         <a href="{% url 'wishlists' %}">
           <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Мои списки</button>
         </a>
+        <a href="{% url 'faq' %}">
+          <button class="btn btn-outline-success btn-lg px-4 me-sm-3" type="button">
+           Как пользоваться 
+          </button>
+        </a>
         {% else %}
         <a href="{% url 'login' %}">
           <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Создать список</button>
+        </a>
+        <a href="{% url 'faq' %}">
+          <button class="btn btn-outline-success btn-lg px-4 me-sm-3" type="button">
+           Как пользоваться 
+          </button>
         </a>
         {% endif %}
       </div>
