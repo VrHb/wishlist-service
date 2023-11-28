@@ -1,4 +1,6 @@
 import logging
+import json
+import random
 
 from django.shortcuts import render, redirect
 from django.forms import Form
@@ -67,6 +69,13 @@ class WishlistsView(LoginRequiredMixin, ListView):
         context = super(WishlistsView, self).get_context_data(**kwargs)
         form = self.form_class()
         context['form'] = form
+
+        # TODO use path join
+        quotes_path = "../quotes/quotes.json" 
+        with open(quotes_path, "r") as quotes_file:
+            quotes = json.load(quotes_file)
+        selected_quote = random.choice(quotes)
+        context['quote'] = selected_quote
         logger.info(context)
         return context
 
