@@ -61,3 +61,19 @@ python manage.py createsuperuser
 ```shell
 python manage.py runserver
 ```
+
+#### Парсер цитат
+
+Сайт генерирует цитаты на странице со списками, можно распарсить их
+
+- Использование:
+
+```sh 
+python quotes_parser.py --help
+```
+
+- Пример:
+
+```sh 
+python quotes_parser.py --start_page 1 --end_page 5 --json_path ./quotes
+```
