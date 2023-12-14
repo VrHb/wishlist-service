@@ -16,6 +16,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.views import RedirectURLMixin
 from django.utils.functional import Promise
+from django.conf import settings
 
 from .models import Wishlist, Gift, Wish
 from .forms import WishForm, WishlistForm, LoginForm, RegisterUser
@@ -69,14 +70,11 @@ class WishlistsView(LoginRequiredMixin, ListView):
         context = super(WishlistsView, self).get_context_data(**kwargs)
         form = self.form_class()
         context['form'] = form
-
-        # TODO use path join
-        quotes_path = "../quotes/quotes.json" 
+        quotes_path = settings.QUOTES_PATH
         with open(quotes_path, "r") as quotes_file:
             quotes = json.load(quotes_file)
         selected_quote = random.choice(quotes)
         context['quote'] = selected_quote
-        logger.info(context)
         return context
 
 

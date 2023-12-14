@@ -4,9 +4,12 @@ from typing import NamedTuple
 import json
 
 import requests
+from pathlib import Path
 from bs4 import BeautifulSoup
 from loguru import logger
 
+
+BASE_DIR = Path()
 
 class Argument(NamedTuple):
     start_page: int
@@ -53,7 +56,7 @@ def parse_quotes_on_page(url: str) -> list[dict[str, str]]:
         {
             "text": quote.find("p").getText(), 
             "author": quote.find("a").getText()
-        } for quote in quotes_on_page
+        } for quote in quotes_on_page if len(quote.find("p").getText()) < 80
     ]
     return parsed_quotes
 
@@ -62,7 +65,7 @@ def main() -> None:
     arguments = get_arguments()
     page_ids = range(int(arguments.start_page), int(arguments.end_page))
     os.makedirs(arguments.json_path, exist_ok=True)
-    json_path = os.path.join(arguments.json_path, "quotes.json")
+    json_path = os.path.join(BASE_DIR, arguments.json_path, "quotes.json")
     for page_id in page_ids:
         try:
             url = f"https://quote-citation.com/topic/podarok/page/{page_id}/"

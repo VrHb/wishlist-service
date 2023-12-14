@@ -127,6 +127,8 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=env('GOOGLE_CLIENT_SECRET')
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'wishlists'
 
+QUOTES_PATH = os.path.join(BASE_DIR, 'quotes/quotes.json')
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -146,4 +148,3 @@ LOGGING = {
         'level': 'INFO',
     },
 }
-
