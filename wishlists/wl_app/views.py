@@ -147,6 +147,31 @@ class WishlistView(LoginRequiredMixin, ListView):
         response = self.render_to_response(context)
         return response
 
+class ModalView(View):
+    template_name = 'wish_modal.html'
+    from_class = 'WishForm'
+
+
+    def post(self, request: HttpRequest, wishlist_id: int) -> HttpResponse:
+        user = self.request.user
+        self.object_list = self.get_queryset()
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            wishlist = Wishlist.objects.filter(user=user, id=wishlist_id).first()
+            wish_title = form.cleaned_data.get('wish')
+            wish_link = form.cleaned_data.get('link')
+            wish_price = form.cleaned_data.get('price')
+            wishlist.wishes.create(
+                title=wish_title,
+                link=wish_link,
+                price=wish_price
+            )
+            return redirect('wishlist', wishlist_id=wishlist_id)
+        context = self.get_context_data()
+        context['form'] = form
+        response = self.render_to_response(context)
+        return response
+
 class SharedWishlistView(DetailView):
     model = Wishlist
     template_name = 'share.html'

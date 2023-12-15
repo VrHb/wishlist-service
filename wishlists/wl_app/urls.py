@@ -11,6 +11,8 @@ handler404 = View404.as_view()
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='main'),
+    # test modal path
+    path('modal/', TemplateView.as_view(template_name='test_modal.html'), name='modal'),
     path('wishlists/', WishlistsView.as_view(), name='wishlists'),
     path('lists/<int:wishlist_id>', WishlistView.as_view(), name='wishlist'),
     path('share/<int:user_id>/<int:wishlist_id>', SharedWishlistView.as_view(), name='share_wishlist'),

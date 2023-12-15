@@ -7,15 +7,27 @@
 {% endblock %} 
 
 {% block content %}
+ <script src="https://unpkg.com/htmx.org@1.9.9"></script>
+
+
 <div class="col justify-content-center d-flex">
-  <button
-    type="button"
-    class="btn btn-outline-success mb-4"
-    data-bs-toggle="modal"
-    data-bs-target="#staticBackdrop"
-  >
-    Добавить желание
-  </button>
+<button 
+    hx-get="{% url 'modal' %}" 
+    hx-target="#modals-here" 
+    hx-trigger="click" 
+    data-bs-toggle="modal" 
+    data-bs-target="#modals-here"
+    class="btn btn-outline-success mb-4">Добавить желание</button>
+</div>
+
+<div id="modals-here"
+    class="modal modal-blur fade"
+    style="display: none"
+    aria-hidden="false"
+    tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content"></div>
+    </div>
 </div>
 
 <div
@@ -93,92 +105,4 @@
   <a href="{% url 'wishlists' %}" class="link-success">К cпискам желаний</a>
 </div>
 
-<div
-  class="modal fade"
-  id="staticBackdrop"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
-  tabindex="-1"
-  aria-labelledby="staticBackdropLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Добавить желание</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <form method="POST">
-        {% csrf_token %}
-        <div class="modal-body">
-          <div class="container">
-            <div class="col">
-              <div class="form-floating mb-2">
-                <input
-                  id="wishnameInput"
-                  type="text"
-                  class="form-control mb-2"
-                  name="wish"
-                  placeholder="Название"
-                  required
-                  maxlenght="350"
-                />
-                <label for="wishnameInput">Название желания</label>
-              </div>
-              <div id="nameHelpBlock" class="form-text">
-                Обязательное поле 
-              </div>
-              <p>{{ form.errors.wish }}</p>
-              <label for="linkInput" class="form-label">Ссылка, где можно купить</label>
-              <input 
-                type="url" 
-                class="form-control mb-2" 
-                id="linkInput" 
-                name="link"
-                placeholder="Ссылка"
-                aria-describedby="addonLink"
-              />
-              <div id="linkHelpBlock" class="form-text">
-                Пример: https://gifts.com/gift/
-              </div>
-              <p>{{ form.errors.link }}</p>
-              <div class="input-group mb-2">
-                <input
-                  type="number"
-                  id="priceInput"
-                  step="0.01"
-                  class="form-control mb-2"
-                  name="price"
-                  placeholder="00.00"
-                />
-                <span class="input-group-text mb-2" id="priceId">RUB</span>
-              </div>
-              <div id="priceHelpBlock" class="form-text">
-                Пример: 66.66 
-              </div>
-              <p>{{ form.errors.price }}</p>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-outline-secondary"
-            data-bs-dismiss="modal"
-          >
-            Отмена
-          </button>
-          <button type="submit" class="btn btn-outline-success">
-            Добавить
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 {% endblock %} 
