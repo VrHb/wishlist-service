@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %} 
 
 {% load static %} 
@@ -13,7 +12,7 @@
 
 {% block content %}
 <div class="col justify-content-center d-flex">
-  <form method="post">
+  <form hx-boost="false" method="post">
     {% csrf_token %} 
     {% for field in form %} 
       {{ field }} 

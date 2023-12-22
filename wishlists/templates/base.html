@@ -20,42 +20,51 @@
   {% block title %}
   {% endblock %}
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="{% static 'js/popper.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/htmx.min.js.gz' %}"></script>
   {% block script %}
   {% endblock %}
 </head>
-<body>
-  <div class="container">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-      <a href="{% url 'main' %}" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-        <span class="fs-4">Make a wish</span>
+<body hx-boost="true">
+<div id="header">
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm bg-white">
+    <div class="container-sm">
+    {% if user.is_authenticated %}
+      <a class="navbar-brand" href="{% url 'main' %}">Make a wish</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li><a {% if request.resolver_match.url_name == 'wishlists' %} class="nav-link active" {% endif %} href="{% url 'wishlists' %}" class="nav-link">Мои списки</a></li>
+          <li><a {% if request.resolver_match.url_name == 'gifts' %} class="nav-link active" {% endif %} href="{% url 'gifts' %}" class="nav-link nav-item">Выбранные подарки</a></li>
+          <li><a {% if request.resolver_match.url_name == 'faq' %} class="nav-link active" {% endif %} href="{% url 'faq' %}" class="nav-link">Как пользоваться</a></li>
+          <li><a {% if request.resolver_match.url_name == 'about' %} class="nav-link active" {% endif %} href="{% url 'about' %}" class="nav-link">О сервисе</a></li>
+          <li><a href="{% url 'logout' %}" class="nav-link link-secondary">Выйти</a></li>
+        </ul>
+      </div>
+    {% else %}
+      <a class="navbar-brand" href="{% url 'login' %}">
+        Make a wish
+        <span class="badge bg-primary">Авторизоваться</span>
       </a>
-      {% if user.is_authenticated %}
-        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-          <li><a {% if request.resolver_match.url_name == 'wishlists' %} class="nav-link active px-2" {% endif %} href="{% url 'wishlists' %}" class="nav-link px-2 link-dark">Мои списки</a></li>
-          <li><a {% if request.resolver_match.url_name == 'gifts' %} class="nav-link active px-2" {% endif %} href="{% url 'gifts' %}" class="nav-link nav-item px-2 link-dark">Выбранные подарки</a></li>
-          <li><a href="#" class="nav-link px-2 link-secondary">Блог</a></li>
-          <li><a {% if request.resolver_match.url_name == 'faq' %} class="nav-link active px-2" {% endif %} href="{% url 'faq' %}" class="nav-link px-2 link-dark">Как пользоваться</a></li>
-          <li><a {% if request.resolver_match.url_name == 'about' %} class="nav-link active px-2" {% endif %} href="{% url 'about' %}" class="nav-link px-2 link-dark">О сервисе</a></li>
-          <li><a href="{% url 'logout' %}" class="nav-link px-2 link-secondary">Выйти</a></li>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav">
+          <li><a {% if request.resolver_match.url_name == 'faq' %} class="nav-link active" {% endif %} href="{% url 'faq' %}" class="nav-link">Как пользоваться</a></li>
+          <li><a {% if request.resolver_match.url_name == 'about' %} class="nav-link active" {% endif %} href="{% url 'about' %}" class="nav-link">О сервисе</a></li>
         </ul>
-      {% else %}
-        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="#" class="nav-link px-2 link-secondary">Блог</a></li>
-          <li><a {% if request.resolver_match.url_name == 'faq' %} class="nav-link active px-2" {% endif %} href="{% url 'faq' %}" class="nav-link px-2 link-dark">Как пользоваться</a></li>
-          <li><a {% if request.resolver_match.url_name == 'about' %} class="nav-link active px-2" {% endif %} href="{% url 'about' %}" class="nav-link px-2 link-dark">О сервисе</a></li>
-        </ul>
-        {% if request.resolver_match.url_name == 'main' or request.resolver_match.url_name == 'about' or  request.resolver_match.url_name == 'faq' %}
-        <div class="col-md-5 text-end">
-          <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Войти
-          </a>
-          <a class="btn btn-primary" href="{% url 'registration' %}">Зарегистрироваться</a>
-        </div>
-        {% endif %}
-      {% endif %}
-    </header>
-  </div>  
+      </div>
+    {% endif %}
+    </div>
+  </nav>
+</div>
 
-  <div class="container-sm">
+  <div px-4 class="container-sm">
       {% block content %}
       {% endblock %}
   </div>
@@ -77,7 +86,5 @@
       </ul>
     </footer>
   </div>
-  <script src="{% static 'js/popper.min.js' %}"></script>
-  <script src="{% static 'js/bootstrap.min.js' %}"></script>
 </body>
 </html>

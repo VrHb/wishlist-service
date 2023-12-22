@@ -7,58 +7,66 @@
 {% endblock %}
 
 {% block content %}
-<div class="px-2 pt-2 my-2 text-center">
-    <h1 class="display-4 fw-bold">Создавайте списки желаний, получайте желанные подарки</h1>
-    <div class="col-lg-6 mx-auto">
-      <p class="lead mb-4">С сервисом <b>Make a wish</b> легко создавать списки желаний и удобно ими делиться со своими друзьями и семьей.</p>
-      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
-        {% if request.user.is_authenticated %}
-        <a href="{% url 'wishlists' %}">
-          <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Мои списки</button>
-        </a>
-        <a href="{% url 'faq' %}">
-          <button class="btn btn-outline-success btn-lg px-4 me-sm-3" type="button">
-           Как пользоваться 
-          </button>
-        </a>
-        {% else %}
-        <a href="{% url 'login' %}">
-          <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Создать список</button>
-        </a>
-        <a href="{% url 'faq' %}">
-          <button class="btn btn-outline-success btn-lg px-4 me-sm-3" type="button">
-           Как пользоваться 
-          </button>
-        </a>
-        {% endif %}
+ <div id="startPage">
+  <div class="px-2 pt-2 my-2 text-center">
+      <h1 class="display-4 fw-bold">Создавайте списки желаний, получайте желанные подарки</h1>
+      <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">С сервисом <b>Make a wish</b> легко создавать списки желаний и удобно ими делиться со своими друзьями и семьей.</p>
+        <div hx-boost="true" class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+          {% if request.user.is_authenticated %}
+          <a href="{% url 'wishlists' %}">
+            <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Мои списки</button>
+          </a>
+          <a href="{% url 'faq' %}">
+            <button class="btn btn-outline-success btn-lg px-4 me-sm-3" type="button">
+             Как пользоваться 
+            </button>
+          </a>
+          {% else %}
+          <a href="{% url 'login' %}">
+            <button 
+              type="button" 
+              class="btn btn-primary btn-lg px-4 me-sm-3">
+              Создать список
+            </button>
+          </a>
+          <a href="{% url 'faq' %}">
+            <button 
+              class="btn btn-outline-success btn-lg px-4 me-sm-3" 
+              type="button">
+             Как пользоваться 
+            </button>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="overflow-hidden" style="max-height: 30vh;">
+        <div class="container px-5">
+          <img src="{% static 'wishl_screen.jpeg' %}" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Example image" width="700" height="500" loading="lazy">
+        </div>
       </div>
     </div>
-    <div class="overflow-hidden" style="max-height: 30vh;">
-      <div class="container px-5">
-        <img src="{% static 'wishl_screen.jpeg' %}" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Example image" width="700" height="500" loading="lazy">
-      </div>
-    </div>
-  </div>
 
-  <div class="container px-4 py-5" id="hanging-icons">
-    <h2 class="pb-2 border-bottom">Преимущества</h2>
-    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-      <div class="col d-flex align-items-start">
-        <div>
-          <h2>Быстрота</h2>
-          <p>Благодаря минималистичному дизайну сервис рабоет очень быстро на любых устройствах и при любом качестве соединения в вашей сети.</p>
+    <div class="container px-4 py-5" id="hanging-icons">
+      <h2 class="pb-2 border-bottom">Преимущества</h2>
+      <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+        <div class="col d-flex align-items-start">
+          <div>
+            <h2>Быстрота</h2>
+            <p>Благодаря минималистичному дизайну сервис рабоет очень быстро на любых устройствах и при любом качестве соединения в вашей сети.</p>
+          </div>
         </div>
-      </div>
-      <div class="col d-flex align-items-start">
-        <div>
-          <h2>Визуальная простота</h2>
-          <p>Одинаково хорошо выглядит на экранах любых устройств и не доставляет неудобств информационным шумом.</p>
+        <div class="col d-flex align-items-start">
+          <div>
+            <h2>Визуальная простота</h2>
+            <p>Одинаково хорошо выглядит на экранах любых устройств и не доставляет неудобств информационным шумом.</p>
+          </div>
         </div>
-      </div>
-      <div class="col d-flex align-items-start">
-        <div>
-          <h2>Доступность</h2>
-          <p>Не важно где вы находитесь, если у вас возникла идея подарка - сервис уже под рукой.</p>
+        <div class="col d-flex align-items-start">
+          <div>
+            <h2>Доступность</h2>
+            <p>Не важно где вы находитесь, если у вас возникла идея подарка - сервис уже под рукой.</p>
+          </div>
         </div>
       </div>
     </div>
