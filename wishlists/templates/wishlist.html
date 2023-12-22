@@ -7,17 +7,18 @@
 {% endblock %} 
 
 {% block content %}
-  <div class="col justify-content-center d-flex">
-  <button 
-      data-bs-toggle="modal" 
-      data-bs-target="#addWishModal"
-      class="btn btn-outline-success mb-4">Добавить желание</button>
-  </div>
-
   <div
     class="list-group list-group-flush shadow p-3 mb-4 bg-body-tertiary rounded"
   >
-    <h3>{{ wishlist.title }}</h3>
+    <div class="row-md-4 d-flex">
+      <h3>{{ wishlist.title }}</h3>
+      <div class="col justify-content-end d-flex">
+      <button 
+          data-bs-toggle="modal" 
+          data-bs-target="#addWishModal"
+          class="btn btn-success mb-4">Добавить желание</button>
+      </div>
+    </div>
     <div class="row-md-4 justify-content-right d-flex">
       <div class="dropdown">
         <a
