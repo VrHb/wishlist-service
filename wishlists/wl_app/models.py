@@ -41,7 +41,7 @@ class Wish(models.Model):
     )
     link = models.CharField(
         'Ссылка',
-        max_length=300,
+        max_length=2000,
         blank=True,
         null=True
     )
