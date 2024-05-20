@@ -26,7 +26,8 @@
       <span class="badge bg-success">Подарок выбрали</span>
       {% endif %}
     </div>
-    <form method="GET">
+    <form method="POST">
+      {% csrf_token %} 
       {% if user.is_authenticated and not wish.is_given %}
         <button
           type="submit"

@@ -163,9 +163,14 @@ class SharedWishlistView(DetailView):
         wishlist_id = self.kwargs['wishlist_id']
         wishlist = Wishlist.objects.get(user=user_id, id=wishlist_id)
         context['wishes'] = wishlist.wishes.all()
-        if self.request.GET.get('will_give'):
-            wish_id = int(self.request.GET.get('will_give'))
-            selected_wish = context['wishes'].get(id=wish_id)
+        return context
+
+
+    def post(self, request: HttpRequest, user_id: int, wishlist_id: int) -> HttpResponse:
+        if request.POST.get('will_give'):
+            wish_id = int(request.POST.get('will_give'))
+            wishlist = Wishlist.objects.get(user=user_id, id=wishlist_id)
+            selected_wish = wishlist.wishes.get(id=wish_id)
             selected_wish.is_given = True
             selected_wish.save()
             logger.info(selected_wish.id)
@@ -176,7 +181,7 @@ class SharedWishlistView(DetailView):
                 link=selected_wish.link,
                 wish_id=selected_wish.id
             )
-        return context
+        return redirect('gifts')
 
 class SelectedGiftsView(ListView):
     model = Gift
@@ -200,6 +205,7 @@ class SelectedGiftsView(ListView):
         wishes = Wish.objects.all()
         wish_id = request.POST.get('wish_id')
         selected_wish = wishes.get(id=wish_id)
+        logger.info(selected_wish)
         selected_wish.is_given = False 
         selected_wish.save()
         return redirect('gifts')
